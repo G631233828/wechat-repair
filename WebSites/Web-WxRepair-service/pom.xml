@@ -36,6 +36,13 @@
 			<version>${project.version}</version>
 			<scope>provided</scope>
 	</dependency>
+	
+	<dependency>
+		<groupId>zhongchiedu.com</groupId>
+    	<artifactId>Web-General-service</artifactId>
+    	<version>${project.version}</version>
+    	<scope>provided</scope>
+	</dependency>
     
   </dependencies>
 </project>
