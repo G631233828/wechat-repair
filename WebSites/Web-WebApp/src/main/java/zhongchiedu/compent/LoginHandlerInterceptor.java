@@ -23,36 +23,8 @@ public class LoginHandlerInterceptor implements HandlerInterceptor {
 		if(Common.isNotEmpty(urlid)){
 			session.setAttribute(Contents.MENU_ID, urlid);
 		}
-		
-		
-		/*
-		if(Common.isNotEmpty(urlid)){
-			Resource sub  = this.resourceService.findOneById(urlid, Resource.class);
-			if (sub != null) {
-			session.setAttribute(Contents.SUB_RESOURCE, sub);
-			if (sub.getParentId().equals("1") && Common.isNotEmpty(sub.getParentId())) {
-				Resource sup = this.resourceService.findOneById(sub.getParentId(), Resource.class);
-				if (sup != null) {
-					session.setAttribute(Contents.SUP_RESOURCE, sup);
-				}
-			}
-		}
-		
-	}
-		
-	*/	return true;
-		// String username = (String)
-		// request.getSession().getAttribute(Contents.USER_SESSION);
-		// if(username == null){
-		// //返回登录页面
-		// request.setAttribute("msg", "未获得权限");
-		// request.getRequestDispatcher("/index.html").forward(request,
-		// response);
-		// return false;
-		// }else{
-		// //登录成功
-		// return true;
-		// }
+	return true;
+
 
 	}
 
