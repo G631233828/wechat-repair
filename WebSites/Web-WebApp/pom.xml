@@ -32,6 +32,11 @@
 		</dependency>
 		<dependency>
 			<groupId>zhongchiedu.com</groupId>
+			<artifactId>Web-WxRepair-service</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>zhongchiedu.com</groupId>
 			<artifactId>Web-WeChat-Utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
