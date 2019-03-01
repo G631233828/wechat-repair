@@ -25,12 +25,8 @@ public class Role extends GeneralBean<Role> {
 	@DBRef
 	private List<Resource> resource;
 
-	public Role(String roleName, String roleKey, List<Resource> resource) {
-		super();
-		this.roleName = roleName;
-		this.roleKey = roleKey;
-		this.resource = resource;
-	}
+	private int version; //当前版本
+	
 	public Role() {
 	}
 	

@@ -95,6 +95,7 @@ public class RoleServiceImpl extends GeneralServiceImpl<Role> implements RoleSer
 				ed.setRoleName(role.getRoleName());
 				ed.setIsDisable(role.getIsDisable());
 				ed.setDescription(role.getDescription());
+				ed.setVersion(role.getVersion());
 				this.save(ed);
 			} else {
 				Role ad = new Role();
@@ -102,6 +103,7 @@ public class RoleServiceImpl extends GeneralServiceImpl<Role> implements RoleSer
 				ad.setRoleName(role.getRoleName());
 				ad.setIsDisable(role.getIsDisable());
 				ad.setDescription(role.getDescription());
+				ad.setVersion(1);
 				this.insert(ad);
 			}
 		}
@@ -111,13 +113,9 @@ public class RoleServiceImpl extends GeneralServiceImpl<Role> implements RoleSer
 		try {
 			List<Resource> listres = new ArrayList<Resource>();
 			Role role = this.findRoleById(id);
-			
 			String[] strids = checkallPermission.split(",");
-			
 			TreeSet<Object> t = Common.toRepeat(strids);
-			
 			Iterator i = t.iterator();
-			
 			while(i.hasNext()){
 				// 通过资源的id获取资源
 				Resource res = this.resourceService.findResourceById(i.next().toString());
@@ -132,7 +130,9 @@ public class RoleServiceImpl extends GeneralServiceImpl<Role> implements RoleSer
 			role.setResource(new ArrayList<Resource>());
 			this.save(role);
 			role.setResource(listres);
+			//更新版本
 			this.save(role);
+			uploadRoleVersion(id);
 			return BasicDataResult.build(200, "权限分配成功", null);
 
 		} catch (Exception e) {
@@ -142,6 +142,37 @@ public class RoleServiceImpl extends GeneralServiceImpl<Role> implements RoleSer
 		}
 
 	}
+	
+	
+	
+	/**
+	 * 更新权限版本
+	 */
+	public void uploadRoleVersion(String id){
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+				uploadRoleVersionByThread(id);
+			}
+		}).start();
+	}
+	
+	/**
+	 * 权限版本+1
+	 * @param id
+	 */
+	public synchronized void uploadRoleVersionByThread(String id){
+		Role role = this.findOneById(id, Role.class);
+		role.setVersion(role.getVersion()+1);
+		this.save(role);
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	/**
 	 * 查询已有权限

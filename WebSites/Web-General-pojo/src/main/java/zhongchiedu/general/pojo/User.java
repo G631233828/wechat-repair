@@ -39,23 +39,6 @@ public class User extends GeneralBean<User> {
 	}
 
 
-	public User(String userName, String cardType, String cardId, String accountName, String passWord,
-			String lastLoginTime, String lastLoginIp, String photograph, String salt, List<Resource> resource,
-			Role role) {
-		super();
-		this.userName = userName;
-		this.cardType = cardType;
-		this.cardId = cardId;
-		this.accountName = accountName;
-		this.passWord = passWord;
-		this.lastLoginTime = lastLoginTime;
-		this.lastLoginIp = lastLoginIp;
-		this.photograph = photograph;
-		this.salt = salt;
-		this.resource = resource;
-		this.role = role;
-	}
-	
 	
 }
 	
