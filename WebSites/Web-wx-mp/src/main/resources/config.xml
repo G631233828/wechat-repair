@@ -1,0 +1,11 @@
+<xml>
+    <appId>wx90f5cb9c626478fc</appId>
+    <secret>7eb8113329a88165442575bad40e52e1</secret>
+    <token>zhongchi</token>
+    <aesKey></aesKey>
+    <accessToken>1312132</accessToken>
+    <expiresTime>1358461</expiresTime>
+    <templateId>fVTvFWCxKcFc3ETkfn7ghCb5GLB1avkvu4GF4q6X8KY</templateId>
+    <oauth2redirectUri>网页授权获取用户信息回调地址</oauth2redirectUri>
+    <qrconnectRedirectUrl>网页应用授权登陆回调地址</qrconnectRedirectUrl>
+</xml>
