@@ -10,6 +10,7 @@
 		<springboot.version>2.0.3.RELEASE</springboot.version>
 		<project.version>0.0.1-SNAPSHOT</project.version>
 		<shiro-core>1.2.3</shiro-core>
+		<weixin-java-mp.version>3.3.0</weixin-java-mp.version>
 	</properties>
 
 	<dependencyManagement>
@@ -176,6 +177,12 @@
 		<artifactId>commons-codec</artifactId>
 		<version>1.9</version>
 	</dependency>
+   <!-- weixin-java-mp.jar -->
+	<dependency>
+		<groupId>com.github.binarywang</groupId>
+		<artifactId>weixin-java-mp</artifactId>
+		<version>${weixin-java-mp.version}</version>
+	</dependency>
 		</dependencies>
 
 	</dependencyManagement>
@@ -210,5 +217,6 @@
 		<module>Web-WebApp</module>
     <module>Web-WxRepair-pojo</module>
     <module>Web-WxRepair-service</module>
+    <module>Web-wx-mp</module>
   </modules>
 </project>
