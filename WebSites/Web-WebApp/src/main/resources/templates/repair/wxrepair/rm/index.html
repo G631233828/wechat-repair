@@ -1,0 +1,96 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>报修主页面</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}" />
+		<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}" />
+		<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}" />
+		<style>
+			.iconletter {
+				font-size: smaller;
+				font-style: initial;
+				letter-spacing: 1px;
+				color: #E64340;
+			}
+		</style>
+	</head>
+	<body>
+			    <header class='demos-header'>
+      			<h1 class="demos-title">报修</h1>
+    			</header>
+				   <div class="weui-grids">
+				   	    
+				   	      
+      					<a th:href="@{'/wx/rm/tolist/1/?id='+${man?.id}}" class="weui-grid js_grid">
+        						<div class="weui-grid__icon">
+          			<img th:src="@{/assets/repair/icon/status.png}" alt="">
+        						</div>
+       						 <p class="weui-grid__label iconletter">
+          						正在报修
+       						 </p>
+      						</a>
+
+
+
+      				     <a href="#" class="weui-grid js_grid">
+        						<div class="weui-grid__icon">
+          			<img th:src="@{/assets/repair/icon/list.png}" alt="">
+        						</div>
+       						 <p class="weui-grid__label iconletter">
+          						维修列表
+       						 </p>
+      						</a>	
+      						
+      						
+      						      				<a href="#" class="weui-grid js_grid">
+        						<div class="weui-grid__icon">
+          			<img th:src="@{/assets/repair/icon/log.png}" alt="">
+        						</div>
+       						 <p class="weui-grid__label iconletter">
+          						维修记录
+       						 </p>
+      						</a>
+				   </div>
+			
+
+
+
+
+		  <div class="weui-tabbar">
+			<a href="#" class="weui-tabbar__item weui-bar__item--on">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label">主页</p>
+			</a>
+			
+			
+			
+						
+			<a  th:style="'display:' + @{(${man.type eq 'sendto'} ?'none')} + ''"  
+			 th:href="@{'/wx/rp/list?id='+${man.id}}" class="weui-tabbar__item ">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/images/icon_nav_cell.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label" 
+				th:text="${man?.type eq 'manager'}?'待处理' : '待维修'  "></p>
+			</a>	
+				
+
+
+			<a href="msg.html" class="weui-tabbar__item">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/icon/user.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label">我</p>
+			</a>
+	
+	
+	
+	
+		</div>
+	</body>
+
+</html>

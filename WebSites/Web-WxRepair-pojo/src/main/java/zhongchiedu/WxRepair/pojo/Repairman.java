@@ -14,8 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Document
-@ToString
 public class Repairman extends Contact{
-
-	
+		
+	private String type;
 }

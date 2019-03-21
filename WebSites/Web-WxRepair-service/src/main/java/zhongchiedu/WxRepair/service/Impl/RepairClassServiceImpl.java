@@ -50,10 +50,6 @@ public class RepairClassServiceImpl extends GeneralServiceImpl<RepairClass>{
 	}
 	
 	
-	public RepairClass findOneById(String id) {
-		RepairClass rc=this.findOneById(id);
-		return rc!=null?rc:null;
-	}
 	
 	public RepairClass findOneByName(String name) {
 		Query query=new Query();

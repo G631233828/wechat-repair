@@ -1,0 +1,93 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>维修单详情</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no">
+
+<meta name="description"
+	content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui2.css}" />
+		<style type="text/css">
+			.Time {
+				float: right;
+				color: #999999;
+			}
+		</style>
+
+	</head>
+
+	<body ontouchstart>
+		<header class='demos-header'>
+			<h1 class="demos-title">维修单详情</h1>
+		</header>
+		<article class="weui-article" style="font-size: 14px;padding:1px 15px;">
+			<section>
+				<h2 class="title" style="color: #6495ED;" th:text="${msg?.person?.schoolName}"></h2>
+				<section>
+					<p style="text-indent: 2em;color: #6495ED;" th:text="${msg?.content}"></p>
+					<span style="color: red;">教师备注：</span>
+					<p style="text-indent: 2em;" th:text="${msg.teachernote}"></p>
+				    
+				    <span style="color: red;">管理备注：</span>
+					<p style="text-indent: 2em;" th:text="${msg.managernote}"></p>
+					<span class="Time" th:text="${#dates.format(msg.createTime, 'yyyy-MM-dd')}"></span>
+					<p style="clear: both;" th:text="'报修人:'+${msg?.person?.name}"></p>
+					<p th:text="'手机:'+ ${msg?.person?.tel}"></p>
+					<p th:text="'地址:'+${msg?.person?.addr}"></p>
+					<div style="border-top: 1px solid #007AFF;padding-bottom: 2px;">
+					<p style="margin-top: 2px;" 
+					th:text="${msg?.repairman!=null}?'指定人员:' + ${msg?.repairman?.name}  + 
+					 '&nbsp;&nbsp;&nbsp;&nbsp;':'暂无人员接收' "></p>
+					<p th:text="'预计完成时间:'+ (${msg?.expectedtime}?:'未接单')"></p>
+					<p style="margin-top: 2px;" th:text="'实际完成时间:'+ (${msg?.donetime}?:'未完成')"></p>
+					<span style="color: red;">教师评论：</span>
+					<p style="text-indent: 2em;">未点评</p>
+					</div>
+				</section>
+			</section>
+		</article>
+		
+		
+
+
+		
+					<div class="weui-tabbar">
+		<a th:href="@{'/wx/rp/toIndex/'+${man?.id}}" class="weui-tabbar__item weui-bar__item--on">
+			<div class="weui-tabbar__icon">
+				<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+			</div>
+			<p class="weui-tabbar__label">主页</p>
+		</a>
+<!-- 
+			<a href="list.html" class="weui-tabbar__item ">
+				<div class="weui-tabbar__icon">
+					<img src="./images/icon_nav_cell.png" alt="">
+				</div>
+				<p class="weui-tabbar__label">维修列表</p>
+			</a>				
+ -->
+		</div>
+
+			<script th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+			<script th:src="@{/assets/repair/js/fastclick.js}"></script>
+			<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+			<script>
+				 $("#my-input").calendar({
+				 	dateFormat:'yyyy-mm-dd'
+				 });
+					$(function() {
+						FastClick.attach(document.body);
+					});
+			</script>
+
+	</body>
+
+</html>

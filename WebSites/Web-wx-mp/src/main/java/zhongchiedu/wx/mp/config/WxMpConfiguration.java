@@ -47,7 +47,6 @@ public class WxMpConfiguration {
     public WxMpConfiguration(WxMpProperties properties,LogHandler logHandler,
                              MsgHandler msgHandler) {
     	log.info("进去WxMpconfiguration的构造函数");
-    	log.info(this.logHandler.toString()+"--------"+logHandler.toString());
     	this.properties = properties;
         this.logHandler=logHandler;
         this.msgHandler=msgHandler;

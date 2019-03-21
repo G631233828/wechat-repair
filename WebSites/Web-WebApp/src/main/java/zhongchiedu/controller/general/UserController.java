@@ -174,7 +174,7 @@ public class UserController {
 	@RequestMapping(value = "/user/ajaxgetRepletes", method = RequestMethod.POST)
 	@ResponseBody
 	public BasicDataResult ajaxgetRepletes(@RequestParam(value = "accountName", defaultValue = "") String accountName) {
-			
+			log.info(accountName);
 		return	this.userService.ajaxgetRepletes(accountName);
 		
 	}

@@ -1,0 +1,109 @@
+<!--
+	作者：910692871@qq.com
+	时间：2019-02-21
+	描述：维修人员接收单
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>正在维修</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui2.css}" />
+		<style type="text/css">
+			.Time {
+				float: right;
+				color: #999999;
+			}
+		</style>
+
+	</head>
+
+	<body ontouchstart>
+
+		<header class='demos-header'>
+			<h1 class="demos-title">维修单</h1>
+		</header>
+		<article class="weui-article" style="font-size: 14px;padding:1px 15px;">
+			<section>
+				<h2 class="title" style="color: #6495ED;" th:text="${msg?.person?.schoolName}"></h2>
+				<section>
+					<p style="text-indent: 2em;color: #6495ED;" th:text="${msg?.content}"></p>
+					<span style="color: red;">教师备注：</span>
+					<p style="text-indent: 2em;" th:text="${msg?.teachernote}"></p>
+				    
+				    <span style="color: red;">管理备注：</span>
+					<p style="text-indent: 2em;" th:text="${msg?.managernote}"></p>
+					
+					<span class="Time" th:text="${#dates.format(msg?.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+					<p style="clear: both;" th:text="'报修人:'+${msg?.person?.name}"></p>
+					<p th:text="'手机号:'+${msg?.person?.tel}"></p>
+					<p th:text="'地址:'+${msg?.person?.addr}"></p>
+					
+				</section>
+			</section>
+		</article>
+		
+	
+	<form action="##" method="POST" id="form">		
+<div class="weui-cell">
+	<div class="weui-cell__hd"><label for="date2" class="weui-label">预期时间</label></div>
+	<div class="weui-cell__bd">
+		<input type="text" data-toggle='date' id="my-input" name="donetime" />
+		<input hidden="true" name="msgId" th:value="${msg?.id}" />
+		<input hidden="true" name="manId" th:value="${man?.id}" />
+	</div>
+</div>
+</form>
+
+				<div style="margin-top: 20px;">
+					<button type="button" class="weui-btn weui-btn_primary"  th:onclick="|receipt('@{/wx/rm/receipt}','@{'/wx/rp/toIndex/'+${man?.id}}')|" >接受</button>
+				</div>
+		
+		
+					<div class="weui-tabbar">
+			<a th:href="@{'/wx/rp/toIndex/'+${man?.id}}" class="weui-tabbar__item weui-bar__item--on">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label">主页</p>
+			</a>
+			
+			
+			
+						
+			<a  th:style="'display:' + @{(${man.type eq 'sendto'} ?'none')} + ''"  
+			 th:href="@{'/wx/rp/list?id='+${man.id}}" class="weui-tabbar__item ">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/images/icon_nav_cell.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label" 
+				th:text="${man?.type eq 'manager'}?'待处理' : '待维修'  "></p>
+			</a>	
+						
+					</div>
+
+	<script th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+	<script th:src="@{/assets/repair/js/fastclick.js}"></script>
+	<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+    <script th:src="@{/assets/repair/js/assign.js}"></script>
+	
+			<script>
+				$(function() {
+					FastClick.attach(document.body);
+				});
+				 $("#my-input").calendar({
+					 	dateFormat:'yyyy-mm-dd'
+					 });
+			</script>
+
+	</body>
+
+</html>

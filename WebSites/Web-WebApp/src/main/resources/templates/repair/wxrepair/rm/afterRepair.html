@@ -1,0 +1,202 @@
+<!--
+	作者：910692871@qq.com
+	时间：2019-02-21
+	描述：维修完成单
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>完成维修</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta http-equiv="Content-Type" content="multipart/form-data;charset=utf-8" />
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" href="https://cdn.bootcss.com/weui/1.1.3/style/weui.min.css">
+<link rel="stylesheet" href="https://cdn.bootcss.com/jquery-weui/1.2.1/css/jquery-weui.min.css">
+<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui2.css}" />
+
+
+		<style type="text/css">
+			.Time {
+				float: right;
+				color: #999999;
+			}
+		</style>
+
+	</head>
+
+	<body ontouchstart>
+
+		<header class='demos-header'>
+			<h1 class="demos-title">维修任务</h1>
+		</header>
+		<article class="weui-article" style="font-size: 14px;padding:1px 15px;">
+			<section>
+				<h2 class="title" style="color: #6495ED;" th:text="${msg?.person?.schoolName}"></h2>
+				<section>
+					<p style="text-indent: 2em;color: #6495ED;" th:text="${msg?.content}"></p>
+					<span style="color: red;">教师备注：</span>
+					<p style="text-indent: 2em;" th:text="${msg?.teachernote}"></p>
+
+				    <span style="color: red;">管理备注：</span>
+					<p style="text-indent: 2em;" th:text="${msg?.managernote}"></p>
+					
+					<span class="Time" th:text="${#dates.format(msg?.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+					<p style="clear: both;" th:text="'报修人:'+${msg?.person?.name}"></p>
+					<p th:text="'手机号:'+${msg?.person?.tel}"></p>
+					<p th:text="'地址:'+${msg?.person?.addr}"></p>
+
+				</section>
+			</section>
+		</article>
+
+		<!--第二个隐藏页面-->
+		<div id="full" class="weui-popup-container">
+			<div class="weui-popup__overlay"></div>
+			<div class="weui-popup__modal">
+
+				<h2 class="demos-second-title">维修结果</h2>
+				<div class="weui-cells__title">维修结果备注:</div>
+				
+				<form action="##" method="post"  id="form"  >
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<textarea class="weui-textarea" placeholder="请输入。。" rows="3"></textarea>
+									<input hidden="true" name="msgId" th:value="${msg?.id}"  />
+									<input hidden="true" name="manId" th:value="${man?.id}" />			
+						</div>
+					</div>
+				</div>
+
+				<div class="weui-cells__title">请上传维修结果的图片</div>
+
+				<!--图片上传-->
+				<div class="weui-gallery" id="gallery">
+					<span class="weui-gallery__img" id="galleryImg"></span>
+					<div class="weui-gallery__opr">
+						<a href="javascript:" class="weui-gallery__del">
+							<i class="weui-icon-delete weui-icon_gallery-delete"></i>
+						</a>
+					</div>
+				</div>
+
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<div class="weui-uploader">
+								<!--<div class="weui-uploader__hd">  
+                            <p class="weui-uploader__title">图片上传</p>  
+                        </div>  -->
+								<div class="weui-uploader__bd">
+									<ul class="weui-uploader__files" id="uploaderFiles">
+
+									</ul>
+									<div class="weui-uploader__input-box">
+										<input id="uploaderInput" name="files" class="weui-uploader__input zjxfjs_file" type="file" accept="image/*" multiple="multiple">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				</form>
+
+				<div class="weui-flex">
+					<div class="weui-flex__item">
+						<div class="placeholder">
+							<button type="button" th:onclick="|finish('@{/wx/rm/finish}','@{'/wx/rp/toIndex/'+${man. id}}')|" class="weui-btn bg-blue">发送</button>
+						</div>
+					</div>
+					<div class="weui-flex__item">
+						<div class="placeholder">
+							<a href="javascript:;" class="weui-btn weui-btn_primary close-popup">返回</a>
+						</div>
+					</div>
+				</div>
+				
+				
+			</div>
+		</div>
+
+		<div style="margin-top: 20px;">
+			<a href="javascript:;" class="weui-btn bg-blue open-popup" data-target="#full">完成</a>
+		</div>
+
+		<div class="weui-tabbar">
+			<a th:href="@{'/wx/rp/toIndex/'+${man. id}}" class="weui-tabbar__item weui-bar__item--on">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label">主页</p>
+			</a>
+		</div>
+
+	<script th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+	<script th:src="@{/assets/repair/js/fastclick.js}"></script>
+	<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+	<script th:src="@{/assets/repair/js/assign.js}"></script>
+	
+	
+		<script>
+			$(function() {
+				FastClick.attach(document.body);
+			});
+		</script>
+
+		<script>
+			//  mui.init();  
+			$(function() {
+				var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
+					$gallery = $("#gallery"),
+					$galleryImg = $("#galleryImg"),
+					$uploaderInput = $("#uploaderInput"),
+					$uploaderFiles = $("#uploaderFiles");
+
+				$uploaderInput.on("change", function(e) {
+					var src, url = window.URL || window.webkitURL || window.mozURL,
+						files = e.target.files;
+					for(var i = 0, len = files.length; i < len; ++i) {
+						var file = files[i];
+
+						if(url) {
+							src = url.createObjectURL(file);
+						} else {
+							src = e.target.result;
+						}
+
+						$uploaderFiles.append($(tmpl.replace('#url#', src)));
+					}
+				});
+				var index; //第几张图片  
+				$uploaderFiles.on("click", "li", function() {
+					index = $(this).index();
+					$galleryImg.attr("style", this.getAttribute("style"));
+					$gallery.fadeIn(100);
+				});
+				$gallery.on("click", function() {
+					$gallery.fadeOut(100);
+				});
+				//删除图片  
+				$(".weui-gallery__del").click(function() {
+					$uploaderFiles.find("li").eq(index).remove();
+				});
+			});
+		</script>
+
+		<script>
+			$(document).on("open", ".weui-popup-modal", function() {
+				console.log("open popup");
+			}).on("close", ".weui-popup-modal", function() {
+				console.log("close popup");
+			});
+		</script>
+
+	</body>
+
+</html>

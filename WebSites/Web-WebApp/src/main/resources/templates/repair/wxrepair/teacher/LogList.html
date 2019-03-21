@@ -1,0 +1,76 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title>维修记录</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+		<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}">
+		<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
+		<style>
+			a:link,
+			a:visited {
+				color: #444;
+				text-decoration: none;
+			}
+			a:hover {
+				color: #444;
+			}
+			.sizechange {
+				font-size: 13px;
+			}
+		</style>
+	</head>
+
+	<body ontouchstart>
+		<header class='demos-header' style="padding-bottom:10px;padding-top:10px;">
+			<h1 class="demos-title">维修记录</h1>
+		</header>
+		
+							<div class="weui-panel__bd" th:each="msg:${list}">
+								<a th:href="@{'/wx/rm/toMsg/status/' + ${msg?.status} +'/'+${msg?.id}}">
+									<div class="weui-media-box weui-media-box_text">
+										<h4 class="weui-media-box__title sizechange" th:text="${msg.person.schoolName}"></h4>
+										<p class="weui-media-box__desc" th:text="${msg.content}"></p>
+										<ul class="weui-media-box__info">
+											<li class="weui-media-box__info__meta" th:text="${#dates.format(msg.createTime, 'yyyy-MM-dd')}"></li>
+											<li class="weui-media-box__info__meta weui-media-box__info__meta_extra" th:text="${msg.teachernote}"></li>
+										</ul>
+									</div>
+								</a>
+							</div>
+							
+
+
+
+				<div class="weui-tabbar">
+			<a th:href="@{'/wx/t/toIndex/'+${teacherid}}" class="weui-tabbar__item weui-bar__item--on">
+				<div class="weui-tabbar__icon">
+					<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+				</div>
+				<p class="weui-tabbar__label">主页</p>
+			</a>
+
+
+
+
+		</div>
+		<script th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+		<script th:src="@{/assets/repair/js/fastclick.js}"></script>
+		<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+		<script type="text/javascript" th:src="@{/assets/repair/js/weuiChange.js}" ></script>
+		<script>
+			$(function() {
+				FastClick.attach(document.body);
+			});
+			
+	    </script>
+
+	</body>
+
+</html>

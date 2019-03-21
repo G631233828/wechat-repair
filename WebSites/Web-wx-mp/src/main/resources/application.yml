@@ -1,7 +1,7 @@
 wx:
   mp:
     configs:
-      - appId: wx90f5cb9c626478fc
-        secret: 7eb8113329a88165442575bad40e52e1
+      - appId: wx2177d0a63a0f960f
+        secret: c8c0499825f637f218ec0eed697e843a
         token: zhongchi
         

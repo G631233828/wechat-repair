@@ -1,10 +1,7 @@
 package zhongchiedu.WxRepair.pojo;
-
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 
 /**
@@ -16,8 +13,17 @@ import lombok.ToString;
 @Getter
 @Setter
 @Document
-@ToString
 public class Teacher extends Contact{
 
 	private String schoolName;
+
+	
+//	@Override
+//  public String toString() {
+//    String[] excludeFlieds=new String[] {"createTime"};
+//	ReflectionToStringBuilder.
+//	setDefaultStyle(ToStringStyle.JSON_STYLE);
+//	return ReflectionToStringBuilder.toStringExclude(this,excludeFlieds);
+//	}
+
 }

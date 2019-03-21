@@ -3,6 +3,7 @@ package zhongchiedu.WxRepair.service.Impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -44,7 +45,9 @@ public class RepairmanServiceImpl extends GeneralServiceImpl<Repairman> {
 				Repairman repairman = this.findOneById(man.getId(),Repairman.class);
 				if (repairman == null)
 					repairman = new Repairman();
+				String accountName=repairman.getAccountName();
 				BeanUtils.copyProperties(man, repairman);
+				repairman.setAccountName(accountName);
 				Role role = this.roleService.findRoleById(roleId);
 				// 通过hid获取角色信息，如果为null 返回null否则返回role
 				repairman.setRole(role != null ? role : null);
@@ -69,6 +72,35 @@ public class RepairmanServiceImpl extends GeneralServiceImpl<Repairman> {
 			return null;
 	}
 	
+	public List<Repairman> findAllManByArea(String area) throws Exception {
+		Query query=new Query();
+		query.addCriteria(Criteria.where("area").is(area));
+		List<Repairman> listman = this.find(query, Repairman.class);
+		if (listman != null)
+			return listman;
+		else
+			return null;
+	}
+	
+	/**
+	 * 根据ids查看mans
+	 * @param ids
+	 * @return
+	 */
+	public List<Repairman> findByIds(String[] ids){
+		List<ObjectId> oids=new ArrayList<>();
+		for (String id : ids) {
+			ObjectId oid=new ObjectId(id);
+			oids.add(oid);
+		}
+		Query query=new Query();
+		query.addCriteria(Criteria.where("_id").in(oids));
+		List<Repairman> mans=this.find(query, Repairman.class);
+		return mans!=null?mans:null;
+	}
+	
+	
+	
 	
 	/**
 	 * 根据人员帐号查询人员信息
@@ -77,7 +109,7 @@ public class RepairmanServiceImpl extends GeneralServiceImpl<Repairman> {
 	 * @return
 	 * @throws Exception
 	 */
-	public Repairman findManByName(String accountName) {
+	public Repairman findManByAccountName(String accountName) {
 		Query query = new Query();
 		query.addCriteria(Criteria.where("accountName").is(accountName));
 		User user=this.userService.findUserByAccountName(accountName);
@@ -89,18 +121,55 @@ public class RepairmanServiceImpl extends GeneralServiceImpl<Repairman> {
 			man=this.findOneByQuery(query, Repairman.class);
 		}
 		return man;
-		
 	}
+			
+			/**
+			 *
+			 * @param name
+			 * @return
+			 */
+			public Repairman findByName(String name) {
+				Query query=new Query();
+				query.addCriteria(Criteria.where("name").is(name));
+				Repairman man=this.findOneByQuery(query, Repairman.class);
+				return man!=null?man:null;
+			}
+			
+	
 		
 	
+	public BasicDataResult checklogin(Repairman man) {
+		String accountName=man.getAccountName();
+		String passWord=man.getPassWord();
+		if(Common.isNotEmpty(accountName)&&Common.isNotEmpty(passWord)) {
+			Query query=new Query();
+			query.addCriteria(Criteria.where("accountName").is(accountName)
+					.and("passWord").is(passWord));
+		Repairman repairman=this.findOneByQuery(query, Repairman.class);
+		if(repairman!=null ) {
+			if(!man.getOpenid().equals(repairman.getOpenid())) {
+				repairman.setOpenid(man.getOpenid());
+			}
+			this.save(repairman);
+		}
+		return repairman!=null?BasicDataResult.build(200, "登录成功", repairman):BasicDataResult.build(202, "登录失败", man);
+	}
+		return BasicDataResult.build(203, "帐号或密码为空", null);
+}	
 	
+	public Repairman findByOpenid(String openid) {
+		Query query=new Query();
+		query.addCriteria(Criteria.where("openid").is(openid));
+		Repairman man=this.findOneByQuery(query, Repairman.class);
+		return man!=null?man:null;
+	}
 	
 	
 	
 	//查询重复帐号
 	public BasicDataResult ajaxgetRepletes(String accountName) {
 		if(Common.isNotEmpty(accountName)){
-			Repairman man = this.findManByName(accountName);
+			Repairman man = this.findManByAccountName(accountName);
 			
 			if(man!=null){
 				return BasicDataResult.build(206,"当前账号已经被注册，请重新输入", null);
@@ -110,11 +179,7 @@ public class RepairmanServiceImpl extends GeneralServiceImpl<Repairman> {
 		}
 		
 		return BasicDataResult.build(400,"未能获取到请求的信息", null);
-		
 	}
-
-
-	
 	
 	
 }

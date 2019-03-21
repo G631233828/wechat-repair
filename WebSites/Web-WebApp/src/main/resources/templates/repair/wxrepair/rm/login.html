@@ -1,0 +1,53 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>登陆界面</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp"/>
+  <link rel="stylesheet" th:href="@{/assets/repair/css/amazeui.min.css}">
+  <link rel="stylesheet" th:href="@{/assets/repair/css/app.css}">
+</head>
+<body>
+
+
+
+
+<div class="am-g">
+	<!-- LOGO 
+	<div class="am-u-sm-12 am-text-center" >
+		 <i class="am-icon-twitch myapp-login-logo"></i>
+	</div>
+	-->
+	<!-- 登陆框 -->
+	<div class="am-u-sm-11 am-u-sm-centered">
+	<form class="am-form" id="form" action="##" method="post">
+	  <fieldset class="myapp-login-form am-form-set">
+		<div class="am-form-group am-form-icon">
+			<i class="am-icon-user"></i>
+			<input type="text" id="username" name="accountName" class="myapp-login-input-text am-form-field" placeholder="请输入您的账号">
+		</div>
+	    <div class="am-form-group am-form-icon">
+			<i class="am-icon-lock"></i>
+			<input type="text" id="password" name="passWord" class="myapp-login-input-text am-form-field" placeholder="至少6个字符">
+		</div>
+		<input  name="openid" th:value="${user?.openId}" hidden="true">
+		<span id="msg" style="color:red"></span>
+	  </fieldset>
+	  <button type="button" class="myapp-login-form-submit am-btn am-btn-primary am-btn-block " th:onclick="|login('@{/wx/rp/tologin}','@{/wx/rp/toIndex/}')|">登 陆</button>
+	</form>
+	</div>
+</div>
+
+<script th:src="@{/assets/repair/js/jquery.min.js}"></script>
+<script th:src="@{/assets/repair/js/amazeui.min.js}"></script>
+<script th:src="@{/assets/repair/js/app.js}"></script>
+<script th:src="@{/assets/repair/js/assign.js}"></script>
+
+</body>
+</html>

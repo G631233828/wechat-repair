@@ -1,0 +1,286 @@
+<!-- 
+	售后负责人指定任务的页面
+ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>维修单</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no">
+
+<meta name="description"
+	content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui2.css}" />
+<style type="text/css">
+.Time {
+	float: right;
+	color: #999999;
+}
+</style>
+
+</head>
+
+<body ontouchstart>
+
+	<header class='demos-header'>
+		<h1 class="demos-title">维修单</h1>
+	</header>
+	<article class="weui-article" style="font-size: 14px;">
+		<section>
+			<h2 class="title" style="color: #6495ED;"
+				th:text="${msg?.person?.schoolName}"></h2>
+			<section>
+				<p style="text-indent: 2em; color: #6495ED;"
+					th:text="${msg?.content}"></p>
+				<span style="color: red;">备注：</span>
+				<p style="text-indent: 2em;" th:text="${msg?.teachernote}"></p>
+				<span class="Time"
+					th:text="${#dates.format(msg?.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+				<p style="clear: both;" th:text="'报修人:'+${msg?.person?.name}"></p>
+				<p th:text="'手机号:'+${msg?.person?.tel}"></p>
+			</section>
+		</section>
+	</article>
+
+	<div class="weui-flex">
+		<div class="weui-flex__item">
+			<div class="placeholder">
+				<button  class="weui-btn bg-blue open-popup"
+					data-target="#full">本公司</button>
+			</div>
+		</div>
+
+		<div class="weui-flex__item">
+			<div class="placeholder">
+				<a href="javascript:;" class="weui-btn bg-blue open-popup"
+					data-target="#fullother">其它</a>
+			</div>
+		</div>
+	</div>
+
+	<div id="full" class="weui-popup-container">
+		<div class="weui-popup__overlay"></div>
+		<div class="weui-popup__modal">
+			<h2 class="demos-second-title">任务分配</h2>
+
+			<form action="##" method="POST" id="form">
+
+				<div class="weui-cells__title">备注:</div>
+				<div class="weui-cells weui-cells_form">
+					<div class="weui-cell">
+						<div class="weui-cell__bd">
+							<textarea class="weui-textarea" placeholder="请输入。。" rows="3"
+								name="note"></textarea>
+							<div class="weui-textarea-counter"></div>
+						</div>
+					</div>
+
+					<div class="weui-cells__title"
+						style="border-top: 1px solid #007AFF; line-height: 3em;">维修事件分类</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<img th:src="@{/assets/repair/icon/user.png}" alt=""
+								style="width: 20px; margin-right: 5px; display: block" />
+						</div>
+						<div class="weui-cell__hd"></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input size14"
+								style="border-bottom: 1px solid #b33939; width: auto;"
+								id="repair" type="text" name="clsId" value="">
+						</div>
+					</div>
+
+					<div class="weui-cells__title"
+						style="border-top: 1px solid #007AFF; line-height: 3em;">维修人员</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<img th:src="@{/assets/repair/icon/user.png}" alt=""
+								style="width: 20px; margin-right: 5px; display: block" />
+						</div>
+						<div class="weui-cell__hd"></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input size14"
+								style="border-bottom: 1px solid #b33939; width: auto;"
+								id="people" type="text" name="manId" value="">
+						</div>
+					</div>
+
+					<div class="weui-cells__title"
+						style="border-top: 1px solid #007AFF; line-height: 3em;">抄送</div>
+					<div class="weui-cell">
+						<div class="weui-cell__hd">
+							<img th:src="@{/assets/repair/icon/user.png}" alt=""
+								style="width: 20px; margin-right: 5px; display: block" />
+						</div>
+						<div class="weui-cell__hd"></div>
+						<div class="weui-cell__bd">
+							<input class="weui-input size14" id="in"
+								style="border-bottom: 1px solid #b33939; width: auto;"
+								type="text" value="" name="sendIds"> <input
+								hidden="true" name="mgId" th:value="${man?.id}" /> <input
+								hidden="true" name="msgId" th:value="${msg?.id}" />
+						</div>
+					</div>
+
+				</div>
+			</form>
+
+			<div class="weui-flex">
+				<div class="weui-flex__item">
+					<div class="placeholder">
+						<button id="submit" type="button" class="weui-btn bg-blue"
+							th:onclick="|assign('@{/wx/rm/assign}','@{'/wx/rp/toIndex/'+${man?.id}}')|">发送</button>
+					</div>
+				</div>
+				<div class="weui-flex__item">
+					<div class="placeholder">
+						<a href="javascript:;"
+							class="weui-btn weui-btn_primary close-popup">返回</a>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+
+
+	<!--第二个隐藏页面-->
+	<div id="fullother" class="weui-popup-container">
+		<div class="weui-popup__overlay"></div>
+		<div class="weui-popup__modal">
+
+			<a href="javascript:;" class="weui-btn weui-btn_primary close-popup">完毕</a>
+		</div>
+
+	</div>
+
+
+	<div class="weui-tabbar">
+		<a th:href="@{'/wx/rp/toIndex/'+${man?.id}}"
+			class="weui-tabbar__item weui-bar__item--on">
+			<div class="weui-tabbar__icon">
+				<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+			</div>
+			<p class="weui-tabbar__label">主页</p>
+		</a> <a th:href="@{'/wx/rp/list?id='+${man?.id}}"
+			class="weui-tabbar__item ">
+			<div class="weui-tabbar__icon">
+				<img th:src="@{/assets/repair/images/icon_nav_cell.png}" alt="">
+			</div>
+			<p class="weui-tabbar__label">待维修</p>
+		</a>
+	</div>
+
+	<script th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+	<script th:src="@{/assets/repair/js/fastclick.js}"></script>
+	<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+	<script th:src="@{/assets/repair/js/assign.js}"></script>
+	<script>
+				$(function() {
+					FastClick.attach(document.body);
+				});
+			</script>
+	<script th:inline="javascript">
+	var contentpath=[[@{/}]]; 	
+	function cb(datalist){
+            $("#repair").select({
+            	title: "维修分类",
+				multi:true,
+				min: 1,
+                items: datalist,
+            });
+		}
+	
+	function cb2(datalist){
+	    $("#people").select({
+	        title: "请选择",
+	        multi: false,
+	        items: datalist,
+	    });
+	}
+
+		function getRpc(callback){
+				 var getrpc=contentpath + 'wx/rp/getRpcs';	
+				  $.ajax({
+				        url: getrpc,
+				        dataType: "json",
+				        success: function(data) {
+				        	if (data.status == 200) {
+				            	clas=data.data;
+				            	if(clas.length == 0){
+				            		 $("#repair").val("没有维修分类!")
+				            	}else{
+					            	var datalist = new Array();
+					                for (var i = 0; i < clas.length; i++) {
+					                    var info = {"title":clas[i].name,"value":clas[i].id};
+					                    datalist.push(info);
+					                }
+					                callback(datalist)
+				            	}
+				            }
+				          if(data.status == 201){
+				        	  $("#people").val("获取数据失败,请返回重试!");
+				          }  
+				        },
+				        error :function(){
+				        	  $("#people").val("获取数据异常,请联系技术");
+				        }
+					  
+				    });
+		}
+		$("#repair").focus(getRpc(cb));			
+		$("#people").focus(getperson(cb2));
+		function getperson(callback){
+			     var area=[[${man?.area}]];	
+			     var urlpath=contentpath + 'wx/rp/getMans?area='+area;
+			     $.ajax({
+		        url: urlpath,
+		        dataType: "json",
+		        success: function(data) {
+		        	if (data.status == 200) {
+		            	mans=data.data;
+		            	if(mans.length == 0){
+		            		 $("#people").val("你的区域没有人员!")
+		            		 $("#submit").attr('disabled',"true");
+		            		 $("#submit").text('无法发送');
+		            	}else{
+			            	var datalist = new Array();
+			                for (var i = 0; i < mans.length; i++) {
+			                    var info = {"title":mans[i].name,"value":mans[i].id};
+			                    datalist.push(info);
+			                }
+			                callback(datalist)
+		            	}
+		            }
+		          if(data.status == 201){
+		        	  $("#people").val("获取数据失败,请返回重试!");
+		          }  
+		        },
+		        error :function(){
+		        	  $("#people").val("获取数据异常,请联系技术");
+		        }
+		    });
+		  }
+
+		  
+		  
+		  
+		  
+			$(document).on("open", ".weui-popup-modal", function() {
+				console.log("asdas")
+				}).on("close", ".weui-popup-modal", function() {
+					console.log("close popup");
+				});
+			</script>
+
+</body>
+
+</html>

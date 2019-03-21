@@ -1,0 +1,116 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>个人信息</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}" />
+<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}" />
+<style>
+	.red{
+	 color:red;
+	}
+</style>
+</head>
+<body>
+
+	<div class="weui-cells__title">修改信息</div>
+	<form id="form" action="##" method="POST">
+	<div class="weui-cells">
+		<div class="weui-cells__title">姓名<p class="red"  id="nameEor"></p></div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<img th:src="@{/assets/repair/icon/user.png}" alt=""
+					style="width: 20px; margin-right: 5px; display: block" />
+			</div>
+			<input class="beforeinput" id="name" name="name"></input>
+		</div>
+
+		<div class="weui-cells__title">手机号<p class="red"  id="telEor"></p></div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<img th:src="@{/assets/repair/icon/tel.png}" alt=""
+					style="width: 20px; margin-right: 5px; display: block" />
+			</div>
+			<input class="beforeinput" id="tel" name="tel" />
+		</div>
+
+
+		<div class="weui-cells__title">地址<p class="red"  id="addrEor"></p></div>
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<img th:src="@{/assets/repair/icon/addr.png}" alt=""
+					style="width: 20px; margin-right: 5px; display: block" />
+			</div>
+			<div class="weui-cell__hd">
+				<label for="name" class="weui-label">区域</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="weui-input size14"
+					style="border-bottom: 1px solid #b33939;" type="text"
+					id="area" name="area">
+			</div>
+
+
+		</div>
+
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<img th:src="@{/assets/repair/icon/school.png}" alt=""
+					style="width: 20px; margin-right: 5px; display: block" />
+			</div>
+			<div class="weui-cell__hd">
+				<label for="name" class="weui-label">学校</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="beforeinput" type="text" id="schoolName" name="schoolName" />
+			</div>
+		</div>
+
+		<div class="weui-cell">
+			<div class="weui-cell__hd">
+				<img th:src="@{/assets/repair/icon/area.png}" alt=""
+					style="width: 20px; margin-right: 5px; display: block" />
+			</div>
+			<div class="weui-cell__hd">
+				<label for="name" class="weui-label">地址</label>
+			</div>
+			<div class="weui-cell__bd">
+				<input class="beforeinput" type="text" id="addr" name="addr" />
+			</div>
+		</div>
+		<input hidden="true" name="wxuser" id="wxuser" th:value="${wxuser}?${wxuser}:''">
+	</div>
+	<div style="margin: 0 auto; text-align: center; margin-top: 20px;">
+		<button type="button" th:text="${wxuser!=null?'添加':'修改'}" 
+		class="weui-btn weui-btn_mini weui-btn_primary" th:onclick="|edit('@{/wx/t/add}','@{/wx/t/toIndex/}')|"></button>
+	</div>
+</form>
+</body>
+
+
+
+<script type="text/javascript"
+	th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+<script type="text/javascript"
+	th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+<script th:src="@{/assets/repair/js/edit.js}"></script>
+<script>
+	$("#area").select({
+		title : "选择区域",
+		items : [ "浦东新区", "奉贤区", "其它" ],
+		onChange : function(d) {
+			console.log(this, d);
+		},
+		onClose : function() {
+			console.log("close");
+		},
+		onOpen : function() {
+			console.log("open");
+		},
+	});
+	
+</script>
+</html>

@@ -1,0 +1,68 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>个人信息</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no">
+<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}" />
+<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}" />
+<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}" />
+  </head>
+<body>
+
+     <div class="weui-cells__title">个人信息页面</div>
+        <div class="weui-cells">
+                   <div class="weui-cell">
+         			 	      <div class="weui-cell__hd">
+         			 			<img th:src="@{/assets/repair/icon/user.png}" alt="" style="width:20px;margin-right:5px;display:block"/>
+         			 	      </div>
+         		          <p class="borderbtm"  style="border:none" th:text="${teacher?.name}"> </p>
+         			 </div>
+         			 
+                   <div class="weui-cell">
+         			 	      <div class="weui-cell__hd">
+         			 			<img th:src="@{/assets/repair/icon/tel.png}" alt="" style="width:20px;margin-right:5px;display:block"/>
+         			 	      </div>
+         		          <p class="borderbtm"  style="border:none" th:text="${teacher?.tel}"></p>
+         			 </div>
+         			 
+         			      <div class="weui-cell">
+         			 	      <div class="weui-cell__hd">
+         			 			<img th:src="@{/assets/repair/icon/addr.png}" alt="" style="width:20px;margin-right:5px;display:block"/>
+         			 	      </div>
+         		          <p class="borderbtm" style="border:none" th:text="${teacher?.addr}"></p>
+         			 </div>
+        				
+               <div class="weui-cell"></div>
+
+
+
+         			      <div class="weui-cell">
+         			 			<img th:src="@{/assets/repair/icon/edit.png}" alt="" style="width:20px;margin-right:5px;display:block"/>
+         		          <a href="waeda.html" class="borderbtm" style="border: none;color: #ADADAD;">信息修改</a>
+         			 </div>
+        
+        </div>
+				
+				 
+
+
+
+
+
+			      <div class="weui-tabbar">
+       	 <a th:href="@{'/wx/t/toIndex/'+${teacher?.id}}"  class="weui-tabbar__item weui-bar__item--on">
+          <div class="weui-tabbar__icon">
+            <img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
+          </div>
+          <p class="weui-tabbar__label">主页</p>
+        </a>
+
+
+      </div>
+
+
+</body>
+
+</html>

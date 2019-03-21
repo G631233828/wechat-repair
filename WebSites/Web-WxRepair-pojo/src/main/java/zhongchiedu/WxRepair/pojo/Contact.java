@@ -1,10 +1,11 @@
 package zhongchiedu.WxRepair.pojo;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import zhongchiedu.general.pojo.User;
 
 /**
@@ -16,8 +17,6 @@ import zhongchiedu.general.pojo.User;
 
 @Getter
 @Setter
-@Document
-@ToString
 public class Contact  extends User{
 
 	private String city;    //市
@@ -25,4 +24,14 @@ public class Contact  extends User{
 	private String addr;    //具体地址
 	private String tel;     //手机号
 	private String name;    //个人姓名
+	private String openid;//微信相关
+
+	@Override
+	  public String toString() {
+	    String[] excludeFlieds=new String[] {"createTime","role","resource"};
+		ReflectionToStringBuilder.
+		setDefaultStyle(ToStringStyle.JSON_STYLE);
+		return ReflectionToStringBuilder.toStringExclude(this,excludeFlieds);
+		}
+
 }
