@@ -165,7 +165,8 @@ public class RepairMsgController {
 			List<RepairMsg> list=this.repairMsgService.findListByIdAndStatus(man.getId(),status);
 			map.put("list", list);
 			return "repair/wxrepair/rm/InRepairList";	
-			}else if(man.getType().equals(TypeRepair.Manager.getType())){
+			}else if(man.getType().equals(TypeRepair.Manager.getType())||
+					man.getType().equals(TypeRepair.Sendto.getType())){
 				List<RepairMsg> list=this.repairMsgService.areastatusList(man.getArea(),1,4);
 				map.put("list", list);
 				return "repair/wxrepair/rm/LogList";
@@ -175,6 +176,31 @@ public class RepairMsgController {
 		}
 		return "";
 	}
+	
+	
+	
+	/**
+	 * 售后查看维修记录
+	 * @param status
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/log/{status}")
+	public String RepairListlog(@PathVariable("status")Integer status,@RequestParam("id")String id,ModelMap map) {
+		Repairman man = this.repairmanService.findOneById(id, Repairman.class);
+		map.put("man", man);
+		if(man!=null) {
+			if(man.getType().equals(TypeRepair.Person.getType())) {
+			List<RepairMsg> list=this.repairMsgService.findListByIdAndStatus(man.getId(),status);
+			map.put("list", list);
+			}else{
+				List<RepairMsg> list=this.repairMsgService.areastatusList(man.getArea(),status);
+				map.put("list", list);
+			}
+		}
+		return "repair/wxrepair/rm/LogList2";
+	}
+	
 	
 	
 	

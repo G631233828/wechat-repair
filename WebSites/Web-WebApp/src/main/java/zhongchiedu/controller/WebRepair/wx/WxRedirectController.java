@@ -129,7 +129,11 @@ public class WxRedirectController {
 			            	if(msg.getStatus().equals(MsgStatus.Get.getValue())) {
 			            		return "repair/wxrepair/rm/afterRepair";
 			            		}
-			            
+			            	
+			            	 if(msg.getStatus().equals(MsgStatus.Done.getValue())) {
+				            		return "repair/wxrepair/rm/detalimsg";
+			            	 }
+			            	 
 			            }
 			           
 			            

@@ -120,11 +120,13 @@ public class WxPortalController {
 		map.put("msg", msg);
 		Repairman man = this.repairService.findOneById(manid, Repairman.class);
 		map.put("man", man);
+		
 		if (man.getType().equals(TypeRepair.Manager.getType())||man.getType().equals(TypeRepair.Sendto.getType())) {
 			return "repair/wxrepair/rm/detalimsg";
 		} else if (man.getType().equals(TypeRepair.Person.getType())) {
 			return "repair/wxrepair/rm/afterRepair";
 		}
+	
 		return "repair/wxrepair/rm/afterRepair";
 	}
 	

@@ -29,14 +29,19 @@
 
 	<body ontouchstart>
 		<header class='demos-header' style="padding-bottom:10px;padding-top:10px;">
-			<h1 class="demos-title">正在维修</h1>
+			<h1 class="demos-title">维修记录</h1>
 		</header>
 		
 							<div class="weui-panel__bd" th:each="msg:${list}">
-								<a th:href="@{'/wx/rp/InRepair/'+${msg.id}}+'?manid='+${man.id}">
-									<div class="weui-media-box weui-media-box_text">
+								<a th:href="@{'/wx/rp/InRepair/'+${msg.id}}+'?manid='+${man.id}" class="weui-media-box weui-media-box_appmsg">
+								            <div class="weui-media-box__hd">
+              									<img class="weui-media-box__thumb" 
+              									th:src="@{'/'+${msg.pictureofresults[0].savePath + msg.pictureofresults[0].compressPicName}}">
+           									 </div>
+           									 
+									<div class="weui-media-box_text">
 										<h4 class="weui-media-box__title sizechange" th:text="${msg.person.schoolName}"></h4>
-										<p class="weui-media-box__desc" th:text="${msg.content}"></p>
+										<p class="weui-media-box__desc" th:text="${#strings.abbreviate(msg.content,10)}"></p>
 										<ul class="weui-media-box__info">
 											<li class="weui-media-box__info__meta" th:text="${#dates.format(msg?.createTime, 'yyyy-MM-dd')}"></li>
 											<li class="weui-media-box__info__meta weui-media-box__info__meta_extra" th:text="'指定维护人:'+${msg?.repairman?.name}"></li>
@@ -45,6 +50,10 @@
 								</a>
 							</div>
 							
+
+
+
+
 
 
 
