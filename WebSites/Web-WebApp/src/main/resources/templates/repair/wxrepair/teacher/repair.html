@@ -6,123 +6,292 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-<title>报修编辑</title>
+<title>快速报修</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, user-scalable=no">
-
-<meta name="description"
-	content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
-">
-
 <link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}">
 <link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}">
 <link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
 <link rel="stylesheet" th:href="@{/assets/repair/css/weui2.css}" />
+<script type="text/javascript" src="https://res.wx.qq.com/open/libs/weuijs/1.1.4/weui.min.js"></script>
 
 </head>
 
 <body ontouchstart>
 
-		<form action="#" id="repairForm" >
-	<header class='demos-header'>
-		<h1 class="demos-title">报修单</h1>
-
-		<div class="weui-cells__title">问题描述</div>
-		
-		<div class="weui-cells weui-cells_form">
-			<div class="weui-cell">
-				<div class="weui-cell__bd">
-					<textarea name="content" class="weui-textarea" placeholder="请输入。。"
-						rows="3"></textarea>
-					<div class="weui-textarea-counter"></div>
-				</div>
-			</div>
-		</div>
+	<form action="#" id="repairForm">
+		<header class='demos-header'>
 
 
-		<div class="weui-cells__title">备注：</div>
+		<div class="weui-cells__title">联系人信息：</div>
+
 		<div class="weui-cells">
-			<div class="weui-cell">
-				<div class="weui-cell__bd">
-					<input class="weui-input" name="teachernote" type="text"
-						placeholder="请输入">
+			
+			<div class="weui-cell" th:style=" 'display:' +(  ${ school !=null && teacher?.name != '' && teacher?.name !=null }? '' : 'none' )    ">
+			<div style="float: left; width: 90%;">
+				<ul style="list-style: none; font-size: 16px; color: #999;">
+					<li th:text="${school?.addr}+'&nbsp;'+${school?.name}"></li>
+					<li th:text="${teacher?.name}+'&nbsp;'+${teacher?.tel}"></li>
+				</ul>
+			</div>
+			<div class="weui-cell__hd">
+				<a th:href="@{'/wx/t/Msg/'+${teacher?.id}+'/'+${school?.id}}" ><img th:src="@{/assets/repair/icon/edit.png}" alt=""
+					style="width: 20px; margin-right: 0px; display: block" />
+			    </a>
+			</div>
+			</div>
+			
+			    <div class="weui-cell" th:style=" 'display:' +(${school == null || teacher?.name == '' || teacher?.name == null}? '' : 'none')    ">
+						 <a th:href="@{'/wx/t/Msg/'+${teacher?.id}+'/'+${school?.id}}" style="margin-top:15px;margin-bottom:15px;" 
+						 class="weui-btn weui-btn_mini  bg-blue"> 添加信息</a>        			 	 
+                   </div>
+		</div>
+
+
+			<div class="weui-cells__title">请上传故障设备图片(选)</div>
+
+			<!--图片上传-->
+			<div class="weui-gallery" id="gallery">
+				<span class="weui-gallery__img" id="galleryImg"></span>
+				<div class="weui-gallery__opr">
+					<a href="javascript:" class="weui-gallery__del"> <i
+						class="weui-icon-delete weui-icon_gallery-delete"></i>
+					</a>
+				</div>
+			</div>
+
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<div class="weui-uploader">
+							<div class="weui-uploader__bd">
+								<ul class="weui-uploader__files" id="uploaderFiles">
+								</ul>
+								<div class="weui-uploader__input-box">
+									<input id="uploaderInput" name="files"
+										class="weui-uploader__input zjxfjs_file" type="file"
+										accept="image/*" multiple="multiple">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			
+			<div class="weui-cells__title">选择报修内容：</div>
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+					<div class="weui-cell__hd"></div>
+               			 <div class="weui-cell__bd">
+                    		<input class="weui-input" id="rcname" type="text" value="" readonly>
+							<input  id="rcId" name="rcId"  hidden="true" />
+						</div>
+					</div>	
+			</div>
+			
+			
+			
+			
+			
+			
+			<div class="weui-cells__title">问题描述（选填）：</div>
+			<div class="weui-cells weui-cells_form">
+				<div class="weui-cell">
+										<span style="color:red">*</span>
+					<div class="weui-cell__bd">
+						<input class="weui-input content" name="content"   
+						placeholder="请简单描述故障信息"></input>						
+						<div class="weui-textarea-counter"></div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="weui-cells__title">备注：</div>
+			<div class="weui-cells">
+				<div class="weui-cell">
+					<div class="weui-cell__bd">
+						<input class="weui-input" name="teachernote" type="text"
+							>
+					</div>
+				</div>
+			</div>
+					
+					
+					
+
+		</header>
+
+
+
+
+
+
+
+			<input name="id" th:value="${teacher!=null}?${teacher.id}" hidden="true"/>
+			<input name="name" 	th:value="${teacher!=null}?${teacher.name}" hidden="true"/>
+			<input name="tel" 	th:value="${teacher!=null}?${teacher.tel}" hidden="true"/>
+			<input name="schoolId" 	th:value="${school!=null}?${school.id}" hidden="true"/>
+			<input name="classId" 	th:value="${cls!=null}?${cls.id}:''" hidden="true"/>
+
+		<div class="weui-flex">
+			<div class="weui-flex__item">
+				<div class="placeholder">
+					<button type="button" class="weui-btn bg-blue open-popup"
+						th:onclick="|sendRepair('@{/wx/rm/edit}','@{'/wx/t/toIndex/'+${teacher?.id}}')|">发送</button>
 				</div>
 			</div>
 		</div>
-
-	</header>
-
+	</form>
 
 
 
 
-
-	<div class="weui-cells__title">联系人信息：</div>
-
-	<div class="weui-cells">
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/user.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<input class="beforeinput" readonly="readonly"
-				th:value="${teacher!=null}?${teacher.name}"></input>
-		</div>
-
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/tel.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<input class="beforeinput" readonly="readonly"
-				th:value="${teacher!=null}?${teacher.tel}"></input>
-		</div>
-
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/addr.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<input class="beforeinput" readonly="readonly"
-				th:value="${teacher!=null}?${teacher.addr}"></input>
-			<input name="teacherid" th:value="${teacher!=null}?${teacher.id}" hidden="true"/>
-		
-		</div>
-	</div>
-
-	<div class="weui-flex">
-		<div class="weui-flex__item">
-			<div class="placeholder">
-				<button  type="button" class="weui-btn bg-blue open-popup" 
-				th:onclick="|repair('@{/wx/rm/edit}','@{'/wx/t/toIndex/'+${teacher.id}}')|">发送</button>
-			</div>
-		</div>
-	</div>
-</form>
-
-
-
-
-	<div class="weui-tabbar">
-		<a th:href="@{'/wx/t/toIndex/'+${teacher.id}}" class="weui-tabbar__item weui-bar__item--on">
+	<div class="weui-tabbar"
+		th:style="'display:'+@{(${hidden} ? 'none' : 'inline-block')} + ''">
+		<a th:href="@{'/wx/t/toIndex/'+${teacher?.id}}"
+			class="weui-tabbar__item weui-bar__item--on">
 			<div class="weui-tabbar__icon">
 				<img th:src="@{/assets/repair/images/icon_nav_button.png}" alt="">
 			</div>
 			<p class="weui-tabbar__label">主页</p>
 		</a>
 	</div>
-
-
-
 </body>
+
+
 <script type="text/javascript"
 	th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
-		<script th:src="@{/assets/repair/js/fastclick.js}"></script>
-	<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
-	<script th:src="@{/assets/repair/js/assign.js}"></script>
-	
+<script type="text/javascript"
+	th:src="@{/assets/repair/js/fastclick.js}"></script>
+<script type="text/javascript"
+	th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+<script type="text/javascript" th:src="@{/assets/repair/js/assign.js}"></script>
+<script th:inline="javascript">
+		    var date=[[${celist}]];
+			$(function() {
+				FastClick.attach(document.body);
+			});
+			 $("#rcname").click(function () {
+				 weui.picker(date, {
+				   defaultValue: [1, 4],
+				   onConfirm: function (result) {
+					$("#rcname").val(result[result.length-1].label)
+					$("#rcId").val(result[result.length-1].value)
+				   },
+				   id: 'chooseQuestion'
+				});
+			 })
 
+</script>
+
+<script type="text/javascript">
+		  var imgData={};
+		  function getData(){
+			  return imgData;
+		  }
+			 dealImage=function(path,obj,callback){ 
+			  	var img = new Image();
+	            img.src = path;
+	            img.onload = function(){
+	            	var that = this;
+	                // 默认按比例压缩
+	                var w = that.width,
+	                    h = that.height,
+	                    scale = w / h;
+	                w = obj.width || w;
+	                h = obj.height || (w / scale);
+	                var quality = 0.5;  // 默认图片质量为0.5
+	                //生成canvas
+	                var canvas = document.createElement('canvas');
+	                var ctx = canvas.getContext('2d');
+	                // 创建属性节点
+	                var anw = document.createAttribute("width");
+	                anw.nodeValue = w;
+	                var anh = document.createAttribute("height");
+	                anh.nodeValue = h;
+	                canvas.setAttributeNode(anw);
+	                canvas.setAttributeNode(anh);
+	                ctx.drawImage(that, 0, 0, w, h);
+	                // 图像质量
+	                if(obj.quality && obj.quality <= 1 && obj.quality > 0){
+	                    quality = obj.quality;
+	                }
+	                // quality值越小，所绘制出的图像越模糊
+	                var base64 = canvas.toDataURL('image/jpeg', quality );
+	                // 回调函数返回base64的值
+	                callback(base64);
+	            }
+			  }
+			 showSize=function(base64url){
+		            //获取base64图片大小，返回KB数字
+		            var str = base64url.replace('data:image/png;base64,', '');
+		            var equalIndex = str.indexOf('=');
+		            if(str.indexOf('=')>0) {
+		                str=str.substring(0, equalIndex);
+		            }
+		            var strLength=str.length;
+		            var fileLength=((strLength-(strLength/8)*2)/1024).toFixed(1);
+		            return fileLength; 
+			 }
+			 
+			 
+		
+				var tmpl = '<li class="weui-uploader__file" id="src" style="background-image:url(src)"></li>',
+					$gallery = $("#gallery"),
+					$galleryImg = $("#galleryImg"),
+					$uploaderInput = $("#uploaderInput"),
+					$uploaderFiles = $("#uploaderFiles");
+				
+				
+				
+				$uploaderInput.on("change", function(e) {
+					var src, url = window.URL || window.webkitURL || window.mozURL,
+						files = e.target.files;
+				
+					for(var i = 0, len = files.length; i < len; ++i) {
+						var file = files[i];
+						if(url) {
+							src = url.createObjectURL(file);
+						} else {
+							src = e.target.result;
+						}
+					 	  calback(src,function(li){
+						 		$uploaderFiles.append(li);
+					 	  })	
+					}		
+				});
+				calback=function(src,callback){
+					dealImage(src,{w:"400",h:"400",quality:0.3},function(base64){
+					//	console.log("压缩后"+showSize(base64)+"kb")
+				 		var li=$(tmpl.replace(/src/g, src));
+				 		imgData[li.attr('id')]=base64;
+				 		callback(li)
+					})
+				};
+				
+				var index; //第几张图片  
+				$uploaderFiles.on("click", "li", function() {
+					index = $(this).index();
+					$galleryImg.attr("style", this.getAttribute("style"));
+					$gallery.fadeIn(100);
+				});
+				$gallery.on("click", function() {
+					$gallery.fadeOut(100);
+				});
+				//删除图片  
+				$(".weui-gallery__del").click(function() {
+					var li=$($uploaderFiles.find("li")[index]);
+					var lid=li.attr('id');
+					if(imgData.hasOwnProperty(lid)>-1){
+			  		    delete imgData[lid]
+					$uploaderFiles.find("li").eq(index).remove();
+					window.URL.revokeObjectURL(lid);
+						}
+				});
+		  </script>
 
 </html>

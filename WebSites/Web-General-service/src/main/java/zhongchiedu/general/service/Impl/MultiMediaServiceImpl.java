@@ -65,6 +65,39 @@ public class MultiMediaServiceImpl  extends GeneralServiceImpl<MultiMedia> imple
 		
 	}
 	
+	
+	public List<MultiMedia> uploadImages(String dir,String path,String belong,MultipartFile...file){
+		
+		List<MultiMedia> list = new ArrayList<MultiMedia>();
+		if(Common.isNotEmpty(file[0].getOriginalFilename())){
+			for(MultipartFile m:file){
+				String  date=Common.getDateNow() + "/";
+				String uploadPath = dir+path+date;
+				MultiMedia multi = new MultiMedia();
+				Map<String,Object> map = this.fileOperateUtil.upload(m, uploadPath, m.getOriginalFilename());
+				multi.setOriginalName(m.getOriginalFilename());
+				multi.setGenerateName(map.get(Contents.FILENAME).toString());
+				multi.setSavePath(path+date);
+				multi.setDir(dir);
+				multi.setThumbnail(null);
+				multi.setExtension(map.get(Contents.SUFFIXNAME).toString());
+				multi.setFileType("IMG");
+				long size = m.getSize();
+				String sizeStr = size < 1023 ? "B"
+						: size < (1024 * 1024) - 1 ? "KB" : size < (1024 * 1024 * 1024) - 1 ? "MB" : "GB";
+				multi.setFileSize(size < 1023 ? size
+						: size < (1024 * 1024) - 1 ? (size / 1024)
+								: size < (1024 * 1024 * 1024) - 1 ? (size / (1024 * 1024)) : (size / (1024 * 1024 * 1024)));
+				multi.setFileSizeStr(sizeStr);
+				multi.setBelong(belong);
+				this.insert(multi);
+				list.add(multi);
+			}
+		}
+		return list;
+		
+	}
+	
 	/**
 	 * 上传文件
 	 * @return

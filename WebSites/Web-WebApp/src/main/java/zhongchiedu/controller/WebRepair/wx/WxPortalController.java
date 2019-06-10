@@ -22,6 +22,7 @@ import zhongchiedu.WxRepair.service.Impl.RepairmanServiceImpl;
 import zhongchiedu.WxRepair.service.Impl.TeacherServiceImpl;
 import zhongchiedu.WxRepair.util.MsgStatus;
 import zhongchiedu.WxRepair.util.TypeRepair;
+import zhongchiedu.aspect.AspectLog;
 import zhongchiedu.common.utils.BasicDataResult;
 
 @Controller
@@ -42,17 +43,16 @@ public class WxPortalController {
 
 	@RequestMapping("/tologin")
 	@ResponseBody
+    @AspectLog(operationName = "维修人员登录",operationType = "GET")
 	public BasicDataResult Login(Repairman man, HttpSession session) {
 		BasicDataResult result = this.repairService.checklogin(man);
 		return result;
 	}
 
-	@RequestMapping("/toedit")
-	public String toEdit(@RequestParam(value = "code", defaultValue = "") String code) {
-		return "repair/wxrepair/teacher/editmsg";
-	}
+
 
 	@RequestMapping("/toIndex/{id}")
+    @AspectLog(operationName = "售后-主页面",operationType = "GET")
 	public String toIndex(@PathVariable("id") String id, ModelMap map) {
 		Repairman t = this.repairService.findOneById(id, Repairman.class);
 		if (t != null) {
@@ -62,13 +62,14 @@ public class WxPortalController {
 	}
 
 	/**
-	 * 售后查看list
+	 * 售后查看待处理，待维修列表
 	 * 
-	 * @param id
+	 * @param 维修repairman的id
 	 * @param map
 	 * @return
 	 */
 	@RequestMapping("/list")
+    @AspectLog(operationName = "售后查看待处理，待维修列表",operationType = "GET")
 	public String getOnrepairMsgList(@RequestParam("id") String id, ModelMap map) {
 		Repairman man = this.repairService.findOneById(id, Repairman.class);
 		List<RepairMsg> list = null;
@@ -93,6 +94,7 @@ public class WxPortalController {
 	 * @return
 	 */
 	@RequestMapping("/toMsg/{id}")
+    @AspectLog(operationName = "售后-维修信息跳转界面",operationType = "GET")
 	public String toMsg(@PathVariable("id") String id, ModelMap map, @RequestParam("manid") String manid) {
 		RepairMsg msg = this.repairmsgService.GetMsgByid(id);
 		map.put("msg", msg);
@@ -109,24 +111,31 @@ public class WxPortalController {
 	/**
 	 * 售后查看正在维修
 	 * 
-	 * @param id
-	 * @param map
-	 * @param manid
+	 * @param id  	  RepairMsg的id
+	 * @param map    
+	 * @param manid   售后人员id
 	 * @return
 	 */
 	@RequestMapping("/InRepair/{id}")
+    @AspectLog(operationName = "售后查看正在维修信息",operationType = "GET")
 	public String InRepair(@PathVariable("id") String id, ModelMap map, @RequestParam("manid") String manid) {
 		RepairMsg msg = this.repairmsgService.GetMsgByid(id);
 		map.put("msg", msg);
 		Repairman man = this.repairService.findOneById(manid, Repairman.class);
 		map.put("man", man);
-		
 		if (man.getType().equals(TypeRepair.Manager.getType())||man.getType().equals(TypeRepair.Sendto.getType())) {
-			return "repair/wxrepair/rm/detalimsg";
-		} else if (man.getType().equals(TypeRepair.Person.getType())) {
-			return "repair/wxrepair/rm/afterRepair";
+			if(manid.equals(msg.getRepairman().getId())&&msg.getStatus().equals(MsgStatus.Get.getValue())) {
+				return "repair/wxrepair/rm/afterRepair";
+			}
+			return "repair/wxrepair/rm/detalimsg";  
 		}
-	
+		else if (man.getType().equals(TypeRepair.Person.getType())) {
+				if(msg.getStatus()==2) {
+					return "repair/wxrepair/rm/detalimsg";//维修完成跳转详情页面
+						}else if(msg.getStatus() == 1){
+							return "repair/wxrepair/rm/afterRepair";
+						}
+				}
 		return "repair/wxrepair/rm/afterRepair";
 	}
 	
@@ -142,6 +151,7 @@ public class WxPortalController {
 	 */
 	@RequestMapping("/getMans")
 	@ResponseBody
+    @AspectLog(operationName = "根据area获取维修人员",operationType = "GET")
 	public BasicDataResult getMans(@RequestParam("area") String area) {
 		List<Repairman> mans;
 		try {
@@ -157,6 +167,7 @@ public class WxPortalController {
 
 	@RequestMapping("/getRpcs")
 	@ResponseBody
+    @AspectLog(operationName = "获取维修分类",operationType = "GET")
 	public BasicDataResult getRpcs() {
 		List<RepairClass> rpcs = this.repairClassService.findAll();
 		return BasicDataResult.build(200, "", rpcs);

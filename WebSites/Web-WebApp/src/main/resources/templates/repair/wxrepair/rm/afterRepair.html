@@ -35,7 +35,7 @@
 		</header>
 		<article class="weui-article" style="font-size: 14px;padding:1px 15px;">
 			<section>
-				<h2 class="title" style="color: #6495ED;" th:text="${msg?.person?.schoolName}"></h2>
+				<h2 class="title" style="color: #6495ED;" th:text="${msg?.school?.name}"></h2>
 				<section>
 					<p style="text-indent: 2em;color: #6495ED;" th:text="${msg?.content}"></p>
 					<span style="color: red;">教师备注：</span>
@@ -44,10 +44,23 @@
 				    <span style="color: red;">管理备注：</span>
 					<p style="text-indent: 2em;" th:text="${msg?.managernote}"></p>
 					
+									<!-- 图片加载 -->
+				<div class="weui-gallery" id="gallery2">
+					<span class="weui-gallery__img" id="galleryImg2"></span>
+				</div>
+				<div class="weui-uploader__bd">
+					<ul class="weui-uploader__files" id="uploaderFiles2">
+						<li class="weui-uploader__file" 
+							th:each="pic:${msg.fault}"
+							th:style="'background:url(' + @{'/'+${pic.savePath + pic.generateName + pic.extension}} + ') no-repeat 50%;background-size: cover;'"></li>
+					</ul>
+				</div>
+					
+					
 					<span class="Time" th:text="${#dates.format(msg?.createTime, 'yyyy-MM-dd HH:mm')}"></span>
 					<p style="clear: both;" th:text="'报修人:'+${msg?.person?.name}"></p>
 					<p th:text="'手机号:'+${msg?.person?.tel}"></p>
-					<p th:text="'地址:'+${msg?.person?.addr}"></p>
+					<p th:text="'地址:'+${msg?.school?.addr}"></p>
 
 				</section>
 			</section>
@@ -142,59 +155,134 @@
 	<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
 	<script th:src="@{/assets/repair/js/assign.js}"></script>
 	
-	
 		<script>
 			$(function() {
 				FastClick.attach(document.body);
 			});
+			  var imgData={};
+			  function getData(){
+				  return imgData;
+			  }
+				 dealImage=function(path,obj,callback){ 
+				  	var img = new Image();
+		            img.src = path;
+		            img.onload = function(){
+		            	var that = this;
+		                // 默认按比例压缩
+		                var w = that.width,
+		                    h = that.height,
+		                    scale = w / h;
+		                w = obj.width || w;
+		                h = obj.height || (w / scale);
+		                var quality = 0.5;  // 默认图片质量为0.5
+		                //生成canvas
+		                var canvas = document.createElement('canvas');
+		                var ctx = canvas.getContext('2d');
+		                // 创建属性节点
+		                var anw = document.createAttribute("width");
+		                anw.nodeValue = w;
+		                var anh = document.createAttribute("height");
+		                anh.nodeValue = h;
+		                canvas.setAttributeNode(anw);
+		                canvas.setAttributeNode(anh);
+		                ctx.drawImage(that, 0, 0, w, h);
+		                // 图像质量
+		                if(obj.quality && obj.quality <= 1 && obj.quality > 0){
+		                    quality = obj.quality;
+		                }
+		                // quality值越小，所绘制出的图像越模糊
+		                var base64 = canvas.toDataURL('image/jpeg', quality );
+		                // 回调函数返回base64的值
+		                callback(base64);
+		            }
+				  }
+				 showSize=function(base64url){
+			            //获取base64图片大小，返回KB数字
+			            var str = base64url.replace('data:image/png;base64,', '');
+			            var equalIndex = str.indexOf('=');
+			            if(str.indexOf('=')>0) {
+			                str=str.substring(0, equalIndex);
+			            }
+			            var strLength=str.length;
+			            var fileLength=((strLength-(strLength/8)*2)/1024).toFixed(1);
+			            return fileLength; 
+				 }
+				 
+					var tmpl = '<li class="weui-uploader__file" id="src" style="background-image:url(src)"></li>',
+						$gallery = $("#gallery"),
+						$galleryImg = $("#galleryImg"),
+						$uploaderInput = $("#uploaderInput"),
+						$uploaderFiles = $("#uploaderFiles");
+					
+					$uploaderInput.on("change", function(e) {
+						var src, url = window.URL || window.webkitURL || window.mozURL,
+							files = e.target.files;
+					
+						for(var i = 0, len = files.length; i < len; ++i) {
+							var file = files[i];
+							if(url) {
+								src = url.createObjectURL(file);
+							} else {
+								src = e.target.result;
+							}
+						 	  calback(src,function(li){
+							 		$uploaderFiles.append(li);
+						 	  })	
+						}		
+					});
+					calback=function(src,callback){
+						dealImage(src,{w:"400",h:"400",quality:0.3},function(base64){
+						//	console.log("压缩后"+showSize(base64)+"kb")
+					 		var li=$(tmpl.replace(/src/g, src));
+					 		imgData[li.attr('id')]=base64;
+					 		callback(li)
+						})
+					};
+					
+					var index; //第几张图片  
+					$uploaderFiles.on("click", "li", function() {
+						index = $(this).index();
+						$galleryImg.attr("style", this.getAttribute("style"));
+						$gallery.fadeIn(100);
+					});
+					$gallery.on("click", function() {
+						$gallery.fadeOut(100);
+					});
+					//删除图片  
+					$(".weui-gallery__del").click(function() {
+						var li=$($uploaderFiles.find("li")[index]);
+						var lid=li.attr('id');
+						if(imgData.hasOwnProperty(lid)>-1){
+				  		    delete imgData[lid]
+						$uploaderFiles.find("li").eq(index).remove();
+						window.URL.revokeObjectURL(lid);
+							}
+					});
 		</script>
-
-		<script>
-			//  mui.init();  
-			$(function() {
-				var tmpl = '<li class="weui-uploader__file" style="background-image:url(#url#)"></li>',
-					$gallery = $("#gallery"),
-					$galleryImg = $("#galleryImg"),
-					$uploaderInput = $("#uploaderInput"),
-					$uploaderFiles = $("#uploaderFiles");
-
-				$uploaderInput.on("change", function(e) {
-					var src, url = window.URL || window.webkitURL || window.mozURL,
-						files = e.target.files;
-					for(var i = 0, len = files.length; i < len; ++i) {
-						var file = files[i];
-
-						if(url) {
-							src = url.createObjectURL(file);
-						} else {
-							src = e.target.result;
-						}
-
-						$uploaderFiles.append($(tmpl.replace('#url#', src)));
-					}
-				});
-				var index; //第几张图片  
-				$uploaderFiles.on("click", "li", function() {
-					index = $(this).index();
-					$galleryImg.attr("style", this.getAttribute("style"));
-					$gallery.fadeIn(100);
-				});
-				$gallery.on("click", function() {
-					$gallery.fadeOut(100);
-				});
-				//删除图片  
-				$(".weui-gallery__del").click(function() {
-					$uploaderFiles.find("li").eq(index).remove();
-				});
-			});
-		</script>
-
+		
+		
 		<script>
 			$(document).on("open", ".weui-popup-modal", function() {
 				console.log("open popup");
 			}).on("close", ".weui-popup-modal", function() {
 				console.log("close popup");
 			});
+			var
+			$gallery2 = $("#gallery2"),
+			$galleryImg2 = $("#galleryImg2"),
+			$uploaderFiles2 = $("#uploaderFiles2");
+			var index; //第几张图片  
+			$uploaderFiles2.on("click", "li", function() {
+				index = $(this).index();
+				$galleryImg2.attr("style", this.getAttribute("style"));
+				$galleryImg2.css("background-size","contain");
+				$gallery2.fadeIn(100);
+			});
+			
+			//点击消失
+			$gallery2.on("click", function() {
+				$gallery2.fadeOut(100);
+			});	
 		</script>
 
 	</body>

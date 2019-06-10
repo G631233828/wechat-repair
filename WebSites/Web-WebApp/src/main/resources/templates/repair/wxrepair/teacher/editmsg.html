@@ -1,6 +1,6 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>个人信息</title>
+<title>联系人信息</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport"
@@ -16,77 +16,69 @@
 </head>
 <body>
 
-	<div class="weui-cells__title">修改信息</div>
+	<div class="weui-cells__title">联系人信息</div>
 	<form id="form" action="##" method="POST">
-	<div class="weui-cells">
-		<div class="weui-cells__title">姓名<p class="red"  id="nameEor"></p></div>
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/user.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
+	
+			<div class="weui-cells weui-cells_form">
+			<div class="weui-cell"  >
+				<div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+				<div class="weui-cell__bd" style="border: 1px solid #c3bebe">
+					<input class="weui-input" type="text" name="name" th:value="${teacher?.name}">
+				</div>
 			</div>
-			<input class="beforeinput" id="name" name="name"></input>
+
+			<div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label">手机号</label></div>
+				<div class="weui-cell__bd" style="border: 1px solid #c3bebe">
+					<input class="weui-input"  type="number" id="tel" name="tel" th:value="${teacher?.tel}">
+				</div>
+			</div>
+
+			<div class="weui-cell" >
+				<div class="weui-cell__hd"><label class="weui-label">学校</label></div>
+				<div class="weui-cell__bd" style="border: 1px solid #c3bebe">
+					<input class="weui-input" type="text" name="schoolname" id="schoolname"
+					th:readonly="${school!=null}"
+					th:value="${school!=null}?${school.name}" >
+				</div>
+			</div>
+
+			<div class="weui-cell">
+				<div class="weui-cell__hd"><label class="weui-label">地址</label></div>
+				<div class="weui-cell__bd" style="border: 1px solid #c3bebe">
+					<input class="weui-input" type="text" name="addr"
+					th:readonly="${school!=null}" id="addr"
+					 th:value="${school!=null}?${school.addr}">
+				</div>
+			</div>
+			
+						<div class="weui-cell">
+			<div class="weui-cell__hd">
+          <label  class="weui-label">地区</label>
+        </div>
+      
+        <div class="weui-cell__bd">
+        
+          <select class="weui-select" th:disabled="${school!=null}" id="area" name="area" style="padding-left: 0px;color:red">
+            <option value=''>请选择地区</option>
+            <option value="fx" >奉贤区</option>
+            <option value="pudong" th:selected="${school!=null && school?.area == 'pudong'}">浦东新区</option>
+          </select>
+        
+        </div>
+		        </div>
 		</div>
+				<input name="schoolId" 	th:value="${school!=null}?${school.id}" hidden="true"/>
+				<input name="id" 	th:value="${teacher!=null}?${teacher.id}" hidden="true"/>
+				
+			<div class="weui-btn-area">
+			
+			<button class="weui-btn weui-btn_primary"  id="showTooltips"
+			type="button"
+			th:onclick="|edit('@{/wx/t/editMsg}','@{/wx/t/torepair}')|">确定</button>
+		  
+		  </div>
 
-		<div class="weui-cells__title">手机号<p class="red"  id="telEor"></p></div>
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/tel.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<input class="beforeinput" id="tel" name="tel" />
-		</div>
-
-
-		<div class="weui-cells__title">地址<p class="red"  id="addrEor"></p></div>
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/addr.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<div class="weui-cell__hd">
-				<label for="name" class="weui-label">区域</label>
-			</div>
-			<div class="weui-cell__bd">
-				<input class="weui-input size14"
-					style="border-bottom: 1px solid #b33939;" type="text"
-					id="area" name="area">
-			</div>
-
-
-		</div>
-
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/school.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<div class="weui-cell__hd">
-				<label for="name" class="weui-label">学校</label>
-			</div>
-			<div class="weui-cell__bd">
-				<input class="beforeinput" type="text" id="schoolName" name="schoolName" />
-			</div>
-		</div>
-
-		<div class="weui-cell">
-			<div class="weui-cell__hd">
-				<img th:src="@{/assets/repair/icon/area.png}" alt=""
-					style="width: 20px; margin-right: 5px; display: block" />
-			</div>
-			<div class="weui-cell__hd">
-				<label for="name" class="weui-label">地址</label>
-			</div>
-			<div class="weui-cell__bd">
-				<input class="beforeinput" type="text" id="addr" name="addr" />
-			</div>
-		</div>
-		<input hidden="true" name="wxuser" id="wxuser" th:value="${wxuser}?${wxuser}:''">
-	</div>
-	<div style="margin: 0 auto; text-align: center; margin-top: 20px;">
-		<button type="button" th:text="${wxuser!=null?'添加':'修改'}" 
-		class="weui-btn weui-btn_mini weui-btn_primary" th:onclick="|edit('@{/wx/t/add}','@{/wx/t/toIndex/}')|"></button>
-	</div>
 </form>
 </body>
 
@@ -98,19 +90,49 @@
 	th:src="@{/assets/repair/js/jquery-weui.js}"></script>
 <script th:src="@{/assets/repair/js/edit.js}"></script>
 <script>
-	$("#area").select({
-		title : "选择区域",
-		items : [ "浦东新区", "奉贤区", "其它" ],
-		onChange : function(d) {
-			console.log(this, d);
-		},
-		onClose : function() {
-			console.log("close");
-		},
-		onOpen : function() {
-			console.log("open");
-		},
-	});
-	
+
+function edit(url,toIndex){
+	var tel = $('#tel').val();
+	var schoolname=$("#schoolname").val();
+	var addr=$("#addr").val();
+	var area=$("#area").val();
+	if(!tel || !/1[3|4|5|7|8]\d{9}/.test(tel)) $.toptip('请输入正确的手机号');
+	else if(schoolname.length == 0 || addr.length == 0){
+		$.toptip('学校或地址不能为空')
+	 }else if(area.length == 0){
+			$.toptip('请选择区域~')
+	 }
+	else{
+	    $.ajax({
+            type: "POST",//方法类型
+            dataType: "json",//预期服务器返回的数据类型
+            url: url,//url
+            data:$('#form').serialize(),//
+            beforeSend: function(){
+            	$.showLoading("正在提交");
+            },
+           complete: function(){
+        	    $.hideLoading();
+           },
+            success: function (result) {
+               	if(result.status == 200){
+                	var data=result.data;
+    				var tid=data["teacherid"];
+    				var sid=data["schoolid"];
+                	toIndex=toIndex+'/'+tid+'/'+sid;
+                	setTimeout(function(){
+                		location.href=toIndex;
+                	   },300)
+               	}else{
+               		alert(result.msg);
+               	}
+            
+            },
+            error : function() {
+            	alert("重试!1!");
+            }
+        });
+		} 
+    }
 </script>
 </html>

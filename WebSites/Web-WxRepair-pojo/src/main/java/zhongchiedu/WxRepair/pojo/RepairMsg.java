@@ -30,6 +30,7 @@ public class RepairMsg extends GeneralBean<RepairMsg>{
 	private String orderId;
 	
 	
+	
 	public RepairMsg() {
 		//格式化当前时间
 		SimpleDateFormat sfDate = new SimpleDateFormat("yyyyMMddHHmmssSSS");
@@ -45,7 +46,7 @@ public class RepairMsg extends GeneralBean<RepairMsg>{
 	private String managernote;//主管备注
 	private String donenote;//完成维修备注
 
-	private Integer status=MsgStatus.Create.getValue(); //订单状态
+	private Integer status=MsgStatus.Create.getValue(); //报修状态
 	
 	private String evaluation;//老师评价
 	private String expectedtime;//维修人员预期时间
@@ -53,13 +54,16 @@ public class RepairMsg extends GeneralBean<RepairMsg>{
 	@DBRef
 	private List<MultiMedia> pictureofresults;//维修结果照片
 	@DBRef
+	private List<MultiMedia> fault;
+	@DBRef
 	private Teacher person;//报修人
 	@DBRef
 	private Repairman repairman;//维修人
 	@DBRef
 	private RepairClass repairclass;//分类所属
 	
-	
+	@DBRef
+	private School school;//所属学校
 	public static String getRandom620(Integer length) {
 		String result = "";
 		Random rand = new Random();

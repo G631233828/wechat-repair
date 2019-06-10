@@ -101,10 +101,10 @@ canvas#canvas4 {
 													<div class="ui-select">
 														<select id="area" name="area" class="form-control" required="required">
 															<option value="">---请选择所在区域---</option>
-															<option value="奉贤"
-																th:selected="${man!=null}?${man.area =='奉贤'}">奉贤</option>
-															<option value="浦东新区"
-																th:selected="${man!=null}?${man.area =='浦东新区'}">浦东新区</option>
+															<option value="fx"
+																th:selected="${man!=null}?${man.area =='fx'}">奉贤</option>
+															<option value="pudong"
+																th:selected="${man!=null}?${man.area =='pudong'}">浦东新区</option>
 														</select>
 													</div>
 												</div>
@@ -117,9 +117,13 @@ canvas#canvas4 {
 														<select id="type" name="type" class="form-control" required="required">
 															<option value="">---请选择---</option>
 															<option value="manager"
-																>售后主管</option>
+																th:selected="${man!=null}?${man?.type =='manager'}">售后主管</option>
 															<option value="person"
-																>售后人员</option>
+																th:selected="${man!=null}?${man?.type =='person'}">售后人员</option>
+															<option value="send"
+															th:selected="${man!=null}?${man?.type =='send'}">
+																抄送人员
+															</option>	
 														</select>
 													</div>
 												</div>

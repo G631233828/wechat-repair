@@ -20,4 +20,9 @@ import zhongchiedu.framework.pojo.GeneralBean;
 public class RepairClass  extends GeneralBean<RepairClass>{
 
 	private String name;//分类名
+	
+	private String parentid;//所遇分类
+	
+	private boolean isparent=true;
+
 }

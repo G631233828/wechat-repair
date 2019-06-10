@@ -1,10 +1,19 @@
-//
+			
+//多图片上传js
+
+
+
+
+			
+			
 function assign(url,toIndex){
+	var sendIds=$("#send").data("values");
+	$('#send').val(sendIds);
     $.ajax({
             type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: url,//url
-            data: $('#form').serialize(),
+            data:$('#form1').serialize(),//
             beforeSend: function(){
             	$.showLoading("正在提交");
             },
@@ -29,7 +38,11 @@ function assign(url,toIndex){
 
 //接受
 function receipt(url,toIndex){
-    $.ajax({
+    var donetime=$('#my-input').val()
+    if(donetime == ''){
+    	alert('请选择预期时间')
+    }else{5
+    	$.ajax({
             type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: url,//url
@@ -54,12 +67,21 @@ function receipt(url,toIndex){
             	alert("重试!1!");
             }
         });
-    }
+    	}
+   }
 
 //完成
 function finish(url,toIndex){
-	var form2=new FormData(document.querySelector("#form"));
-    $.ajax({
+	var form2=new FormData($("#form")[0]);
+	imgsData=getData();
+	var imgs=[]
+	console.time("img");
+	$.each(imgsData,function(){
+		imgs.push(this)
+	})
+	form2.append("image",imgs);
+	console.timeEnd("img");
+	$.ajax({
             type: "POST",//方法类型
             dataType: "json",//预期服务器返回的数据类型
             url: url,//url
@@ -86,7 +108,11 @@ function finish(url,toIndex){
             	alert("重试!1!");
             }
         });
-    }
+   
+
+}
+
+	
 
 
 //维修提交
@@ -119,6 +145,47 @@ function repair(url,indexpath){
             }
         });
  }
+		
+//教师提交维修
+		function sendRepair(url,indexpath){
+			var form2=new FormData($("#repairForm")[0]);
+			imgsData=getData();
+			var imgs=[]
+			$.each(imgsData,function(){
+				imgs.push(this)
+			})
+			form2.append("image",imgs);
+			$.ajax({
+	            type: "POST",
+	            dataType:"json",
+	            url: url,
+	            data: form2,
+	            processData:false,
+	            contentType:false,
+	            beforeSend: function(){
+	            	$.showLoading("正在提交");
+	            },
+	           complete: function(){
+	        	    $.hideLoading();
+	           },
+	            success: function (result) {
+	            	//200成功，201错误信息
+	            	if(result.status == 200){
+	            	   alert("提交成功");
+	            	   setTimeout(function(){
+	            		   location.href=indexpath;
+	            	   },1000)
+	            	}
+	            	if(result.status == 201){
+	            		 alert(result.msg); 
+	            	};
+	            },
+	            error : function() {
+	        		alert("提交异常"); 
+	            }
+	        });
+		}
+
 
 
 //登录
@@ -139,7 +206,7 @@ function login(url,toIndex){
             url: url,//url
             data: $('#form').serialize(),
             success: function (result) {
-                alert(result.status);//打印服务端返回的数据(调试用)
+            	//alert(result.status);打印服务端返回的数据(调试用)
                 if (result.status == 200) {
                 	var reurl=toIndex + result.data.id;
                 	location.href=reurl;

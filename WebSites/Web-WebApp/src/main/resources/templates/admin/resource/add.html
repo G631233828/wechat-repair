@@ -134,11 +134,13 @@ canvas#canvas4 {
 															onchange="return getparentmenu();" required>
 															<option value="">----选择目录----</option>
 															<option th:if="${resList !=null}" th:value="${res.id}"
-																th:each="res:${resList}" th:selected="${res.id == resourssupmenuId}" th:text="${res.name}">
+																th:each="res:${resList}" th:selected="${res.id == resourssupmenuId}" th:text="${res.name}"/>
 														</select>
 													</div>
 												</div>
 											</div>
+
+
 											<div class="form-group" id="parentmenu" th:style="${resourssubmenuId} !=null?'display:block;':'display:none;'" >
 												<label class="col-lg-1 control-label">所属菜单：</label>
 												<div class="col-lg-6">

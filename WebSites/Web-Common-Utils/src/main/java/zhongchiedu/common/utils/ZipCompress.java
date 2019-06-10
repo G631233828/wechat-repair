@@ -70,6 +70,42 @@ public class ZipCompress {
 	
 	
 	
+	public static File zipFile2(List<File> srcFile,File zipFile){
+		byte[] buf = new byte[1024];
+		try{
+			//ZipOutputStream 完成文件的压缩
+			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+			
+			for(int i=0;i<srcFile.size();i++){
+				
+				FileInputStream in = new FileInputStream(srcFile.get(i));
+				
+				out.putNextEntry(new ZipEntry(srcFile.get(i).getName()));
+				
+				int len;
+				
+				while((len = in.read(buf))>0){
+					
+						out.write(buf, 0, len);
+						
+				}
+				
+				out.closeEntry();
+				
+				in.close();
+			}
+			
+			out.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			return zipFile;
+		}
+		
+	}
+	
+	
 	
 	
 	/**
@@ -161,28 +197,24 @@ public class ZipCompress {
 	
 	public static void main(String[] args) {
 		List<File> srcfile = new ArrayList();
-		File f1 = new File("I:/PS素材/1.jpg");
-		File f2 = new File("I:/PS素材/2.jpg");
-		
+		String file1="d:/demo/1.zip";
+		String file2="d:/demo/2.zip";
+		File f1 = new File(file1);
+		File f2 = new File(file2);
 		srcfile.add(f1);
 		srcfile.add(f2);
-		
-		
-		String path = templatePath("I:/PS素材/");
-		
-		
-		
+		String path = templatePath("d:/demo/");
 		System.out.println(path);
 		File zipfile = new File(path+getZipFilename());
-		
-		zipFile(srcfile,zipfile);
-		try {
-			Thread.sleep(5000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		deleteFile(new File(path+getZipFilename()));
+		File f=zipFile2(srcfile,zipfile);
+		System.out.println(f.getAbsolutePath());
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		deleteFile(new File(path+getZipFilename()));
 	}
 	
 	

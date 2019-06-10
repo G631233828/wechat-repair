@@ -77,7 +77,7 @@ public class FileOperateUtil {
        //String realPath = path + "/" + FileNameUtils.getFileName(fileName);
        //使用文件名
        String rname = rname(fileName);
-	   String realPath = path + "/" + rname;
+	   String realPath = path + "/" + rname +  Common.getSuffix(file.getOriginalFilename());
        
        File dest = new File(realPath);
        //判断文件父目录是否存在
@@ -242,7 +242,7 @@ public class FileOperateUtil {
 				// 对上传文件进行重命名
 				rname = rname(fileName);
 				map.put(FileOperateUtil.RENAME, rname);
-				path = file + "/" + rname;// 存放位置\
+				path = file + "/" + rname + "." + extension;// 存放位置\
 				destFile = new File(path);
 			}
 

@@ -48,25 +48,27 @@ public class WxMenuController {
     @GetMapping("/create")
     public String menuCreateSample(@PathVariable String appid) throws WxErrorException, MalformedURLException {
         WxMenu menu = new WxMenu();
-        WxMenuButton button1 = new WxMenuButton();
-        button1.setType(MenuButtonType.CLICK);
-        button1.setName("今日歌曲");
-        button1.setKey("V1001_TODAY_MUSIC");
-
-        WxMenuButton button3 = new WxMenuButton();
-        button3.setName("菜单");
-
-        menu.getButtons().add(button1);
-        menu.getButtons().add(button3);
-
-        WxMenuButton button31 = new WxMenuButton();
-        button31.setType(MenuButtonType.VIEW);
-        button31.setName("维修平台");
-       
-        WxMenuButton button32 = new WxMenuButton();
-        button32.setType(MenuButtonType.VIEW);
-        button32.setName("模拟二维码");
         
+        WxMenuButton button1 = new WxMenuButton();
+        button1.setType(MenuButtonType.VIEW);
+        button1.setName("申请报修");
+       
+        
+        WxMenuButton button2=new WxMenuButton();
+        button2.setType(MenuButtonType.CLICK);
+        button2.setName("维修入口");
+        
+        WxMenuButton button21 = new WxMenuButton();
+        button21.setType(MenuButtonType.VIEW);
+        button21.setName("售后登录入口");
+        
+        
+        WxMenuButton button22=new WxMenuButton();
+        button22.setType(MenuButtonType.VIEW);
+        button22.setName("教师入口");
+       
+        button2.getSubButtons().add(button21);
+        button2.getSubButtons().add(button22);
 
         ServletRequestAttributes servletRequestAttributes =
             (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -79,18 +81,21 @@ public class WxMenuController {
                     WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
             log.info("protocol是:{},Host:{},Path:{}",requestURL.getProtocol(),requestURL.getHost(),requestURL.getPath());
             log.info("授权回调的地址拼接为:{}",url);
+            String url1= WxMpConfiguration.getMpServices().get(appid)
+                    .oauth2buildAuthorizationUrl(
+                            String.format("%s://%s/web/wx/redirect/%s/repairIndex/1", requestURL.getProtocol(), requestURL.getHost(), appid),
+                            WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
             String url2= WxMpConfiguration.getMpServices().get(appid)
                     .oauth2buildAuthorizationUrl(
-                            String.format("%s://%s/web/wx/redirect/%s/repairIndex", requestURL.getProtocol(), requestURL.getHost(), appid),
+                            String.format("%s://%s/web/wx/redirect/%s/repairIndex/2", requestURL.getProtocol(), requestURL.getHost(), appid),
                             WxConsts.OAuth2Scope.SNSAPI_USERINFO, null);
-            button31.setUrl(url);
-            button32.setUrl(url2);
+            button1.setUrl(url1);
+            button21.setUrl(url);
+            button22.setUrl(url2);
             log.info("url2的地址是:{}",url2);
         }
-
-        button3.getSubButtons().add(button31);
-        button3.getSubButtons().add(button32);
-
+            menu.getButtons().add(button1);
+            menu.getButtons().add(button2);
 
         return WxMpConfiguration.getMpServices().get(appid).getMenuService().menuCreate(menu);
     }

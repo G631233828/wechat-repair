@@ -1,10 +1,14 @@
 package zhongchiedu.controller.WebRepair;
 
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpSession;
 
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,6 +63,10 @@ public class RepairClassController {
 	@GetMapping("/repairclass")
 	@RequiresPermissions(value = "repairclass:add")
 	public String addUserPage(Model model) {
+		Query query=new Query();
+		query.addCriteria(Criteria.where("isparent").is(true));
+		List<RepairClass> rcs=this.repairClassServiceImpl.find(query, RepairClass.class);
+		model.addAttribute("rclist", rcs);
 		return "repair/web/add";
 	}
 	
@@ -82,6 +90,13 @@ public class RepairClassController {
 	@GetMapping("/repairclass{id}")
 	public String toEdit(@PathVariable("id")String id,Model model) {
 		RepairClass rc=this.repairClassServiceImpl.findOneById(id, RepairClass.class);
+		Query query=new Query();
+		query.addCriteria(Criteria.where("isparent").is(true));
+		List<RepairClass> rcs=this.repairClassServiceImpl.find(query, RepairClass.class);
+		if(rcs!=null&&rc!=null) {
+		rcs=rcs.stream().filter(r->!id.equals(r.getId())).collect(Collectors.toList());
+		}
+		model.addAttribute("rclist", rcs);
 		model.addAttribute("repairclass", rc);
 		return "repair/web/add";
 	}

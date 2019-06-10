@@ -94,7 +94,36 @@ canvas#canvas4 {
 												</div>
 											</div>
 
-
+											<div class="form-group">
+												<label class="col-lg-3 control-label">是否为父类：</label>
+												<div class="col-lg-8">
+													<div class="ui-select">
+														<select id="type" name="isparent" class="form-control"
+															onchange="return changeType();">
+															<option value="">---请选择---</option>
+															<option th:selected="${repairclass!=null}?${repairclass.isparent}" 
+															value="true">是</option>
+															<option th:selected="${repairclass!=null}?${!repairclass.isparent}" 
+														    value="false">不是</option>
+														</select>
+													</div>
+												</div>
+											</div>		
+											
+											<div class="form-group" id="parent" th:style="${repairclass?.isparent == false}?'display:block;':'display:none;'">
+												<label class="col-lg-3 control-label">所属维修类：</label>
+												<div class="col-lg-8">
+													<div class="ui-select">
+														<select name="parentid" id="parentId" class="form-control">
+																<option th:if="${rclist !=null}" th:value="${rc.id}"
+																 th:each="rc:${rclist}"  th:text="${rc.name}" 
+																 th:selected="${rc.id == repairclass?.parentid}" />
+															</select>
+													</div>
+												</div>
+											</div>
+											
+															
 
 											<div class="form-group">
 												<label class="col-md-3 control-label"></label>
@@ -140,7 +169,20 @@ canvas#canvas4 {
 	<script type="text/javascript" 
 		th:src="@{/plugs/validate/messages_zh.min.js}"></script>
 
+	<script type="text/javascript">
+	function changeType() {
+		var type = $("#type").val();
+		if (type == "false") {
+			$("#parent").show();
+			$("#parentId").attr("disabled", false);
+		}else{
+			$("#parent").css("display", "none");
+			$("#parentId").attr("disabled", true);
 
+		} 
+	}
+		
+	</script>
 
 
 

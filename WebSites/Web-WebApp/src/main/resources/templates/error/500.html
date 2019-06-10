@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<link href='http://fonts.googleapis.com/css?family=Creepster|Audiowide'
+	rel='stylesheet' type='text/css'>
+
+</style>
+<title>Error500</title>
+</head>
+<body>
+				<p>Http状态吗:[[${status}]]</p>
+		  		<div th:text="${#dates.format(timestamp,'yyyy-MM-dd HH:mm:ss')}"></div>
+                <div th:text="${messages}"></div>
+                <div th:text="${error}"></div>
+</body>
+</html>

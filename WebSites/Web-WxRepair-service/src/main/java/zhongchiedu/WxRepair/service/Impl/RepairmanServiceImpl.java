@@ -139,12 +139,12 @@ public class RepairmanServiceImpl extends GeneralServiceImpl<Repairman> {
 		
 	
 	public BasicDataResult checklogin(Repairman man) {
-		String accountName=man.getAccountName();
-		String passWord=man.getPassWord();
+		String accountName=man.getName();
+		String passWord=man.getTel();
 		if(Common.isNotEmpty(accountName)&&Common.isNotEmpty(passWord)) {
 			Query query=new Query();
-			query.addCriteria(Criteria.where("accountName").is(accountName)
-					.and("passWord").is(passWord));
+			query.addCriteria(Criteria.where("name").is(accountName)
+					.and("tel").is(passWord));
 		Repairman repairman=this.findOneByQuery(query, Repairman.class);
 		if(repairman!=null ) {
 			if(!man.getOpenid().equals(repairman.getOpenid())) {

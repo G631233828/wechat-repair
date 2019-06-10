@@ -15,7 +15,9 @@ import lombok.Setter;
 @Document
 public class Teacher extends Contact{
 
+	private String schoolid;
 	private String schoolName;
+	
 
 	
 //	@Override

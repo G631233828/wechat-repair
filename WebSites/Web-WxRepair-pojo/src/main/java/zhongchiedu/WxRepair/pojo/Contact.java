@@ -25,7 +25,9 @@ public class Contact  extends User{
 	private String tel;     //手机号
 	private String name;    //个人姓名
 	private String openid;//微信相关
-
+	
+	private boolean receive=true;//是否接收消息
+	
 	@Override
 	  public String toString() {
 	    String[] excludeFlieds=new String[] {"createTime","role","resource"};

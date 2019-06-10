@@ -133,7 +133,14 @@ public class Common {
 		DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		return format1.format(new Date());
 	}
-
+	
+	public static String fromDateH(Date date) {
+		DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return format1.format(date);
+	}
+	
+	
+	
 	/**
 	 * 返回当前时间 格式：yyyy-MM-dd
 	 * 
@@ -144,12 +151,20 @@ public class Common {
 		return format1.format(new Date());
 	}
 
+	public static String fromDateY(Date date) {
+		DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+		return format1.format(date);
+	}
+	
+	
 	public static Date fromStringToDate(String sdate) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		ParsePosition pos = new ParsePosition(0);
 		Date strtodate = formatter.parse(sdate, pos);
 		return strtodate;
 	}
+
+
 
 	/**
 	 * 用来去掉List中空值和相同项的。

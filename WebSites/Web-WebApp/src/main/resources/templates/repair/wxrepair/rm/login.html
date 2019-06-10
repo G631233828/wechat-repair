@@ -30,11 +30,11 @@
 	  <fieldset class="myapp-login-form am-form-set">
 		<div class="am-form-group am-form-icon">
 			<i class="am-icon-user"></i>
-			<input type="text" id="username" name="accountName" class="myapp-login-input-text am-form-field" placeholder="请输入您的账号">
+			<input type="text" id="username" name="name" class="myapp-login-input-text am-form-field" placeholder="请输入您的账号">
 		</div>
 	    <div class="am-form-group am-form-icon">
 			<i class="am-icon-lock"></i>
-			<input type="text" id="password" name="passWord" class="myapp-login-input-text am-form-field" placeholder="至少6个字符">
+			<input type="password" id="password" name="tel" class="myapp-login-input-text am-form-field" placeholder="至少6个字符">
 		</div>
 		<input  name="openid" th:value="${user?.openId}" hidden="true">
 		<span id="msg" style="color:red"></span>

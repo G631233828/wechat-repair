@@ -1,0 +1,104 @@
+<!-- 
+	教师端列表
+ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<title>维修列表</title>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+		<meta name="description" content="Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
+">
+
+		<link rel="stylesheet" th:href="@{/assets/repair/css/weui.min.css}">
+		<link rel="stylesheet" th:href="@{/assets/repair/css/jquery-weui.css}">
+		<link rel="stylesheet" th:href="@{/assets/repair/css/demos.css}">
+		<script th:src="@{/assets/repair/js/datetime.js}"></script>
+		<style>
+			a:link,
+			a:visited {
+				color: #444;
+				text-decoration: none;
+			}
+			a:hover {
+				color: #444;
+			}
+			.sizechange {
+				font-size: 13px;
+			}
+		</style>
+	</head>
+
+	<body ontouchstart>
+		<header class='demos-header' style="padding-bottom:10px;padding-top:10px;">
+			<h1 class="demos-title">[[${title}]]</h1>
+		</header>
+					    <div id="list">
+						</div>	
+							
+						    <div class="weui-loadmore" id="loading">
+      							<i class="weui-loading"></i>
+     					 	<span class="weui-loadmore__tips">正在加载</span>
+    						</div>
+
+		 
+		<script th:src="@{/assets/repair/js/jquery-2.1.4.js}"></script>
+		<script th:src="@{/assets/repair/js/fastclick.js}"></script>
+		<script th:src="@{/assets/repair/js/jquery-weui.js}"></script>
+		<script th:inline="javascript">
+			$(function() {
+				FastClick.attach(document.body);
+			});
+	          $(function () { 
+	        	  var contentpath=[[@{/}]];
+	              var status=[[${status}]];
+	        	  var id=[[${teacherid}]];
+	              pageSize=10,pageNo=1;
+	              //进入页面加载
+	              load(pageNo);  
+	              //滚动加载更多
+	              var loading = false;  //状态标记
+	              $(document.body).infinite().on("infinite", function() {  
+	                  if(loading) return;  
+	                  loading = true;  
+	                  setTimeout(function() {  
+	                      pageNo=pageNo+1;
+	                      load(pageNo);
+	                      loading = false;  
+	                  }, 1000);   //模拟延迟  
+	              });  
+	              function load(p) {  
+	                  var url=contentpath + 'wx/rm/getLog/pageNo/'+pageNo+'/pageSize/'+pageSize+'/status/'+status+'/'+id;
+	                  $.get(url,function (res) {
+	                      if(res.data.datas.length==0){
+	                          //没有数据时
+	                          $(document.body).destroyInfinite()
+	                          $(".weui-loadmore").html('<div class="weui-loadmore weui-loadmore_line"> <span class="weui-loadmore__tips">别划了，我是有底线的</span></div>')
+	                      }else{
+	                      var datas=res.data.datas;
+	                      for(var i=0;i<datas.length;i++){	               
+	          	var pathTo=[[@{/}]]+'/wx/rm/toMsg/status/' +datas[i].status+'/'+datas[i].id;
+	          $("#list").append("<div class='weui-panel__bd'>"+
+	          "<a href='"+pathTo+"' class='weui-media-box weui-media-box_appmsg'>"+
+	          "<div class='weui-media-box_text'>"+
+	           "<p class='weui-media-box__desc'>"+datas[i].content+"</p>"+
+	          "<ul class='weui-media-box__info'>"+
+	          "<li class='weui-media-box__info__meta'>"+DateUtil.getByDateString(datas[i].createTime)+"</li>"+
+	          "</ul></div></a></div>")
+	                      }
+	               var c=$(".weui-panel__bd");
+	               if( p == 1 && c.length<=5){
+	                   $(document.body).destroyInfinite()
+	                   $(".weui-loadmore").html('<div class="weui-loadmore weui-loadmore_line"> <span class="weui-loadmore__tips">已加载全部数据</span></div>')
+	               		} 
+	                      }
+	                  },"json")
+	              }
+	          })	
+	    </script>
+
+	</body>
+
+</html>

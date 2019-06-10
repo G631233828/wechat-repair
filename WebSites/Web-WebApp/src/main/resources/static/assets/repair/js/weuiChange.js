@@ -3,7 +3,7 @@
  */
 			$(function(){
 				var $elements=$('.weui-media-box');
-				if($elements.length>=6){
+				if($elements.length>=5){
 					var $weuiTabber=$('.weui-tabbar');
 					$weuiTabber.css('position','relative');
 					console.log($weuiTabber.css('position'));

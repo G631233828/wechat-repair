@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+
+<head th:include="public/public_css::pub_css"></head>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" type="text/css"
+	th:href="@{/assets/js/progress-bar/number-pb.css}">
+<link th:href="@{/plugs/sweetalert/sweetalert.css}" rel="stylesheet">
+
+<style type="text/css">
+canvas#canvas4 {
+	position: relative;
+	top: 20px;
+}
+</style>
+<link rel="shortcut icon" href="@{/assets/ico/minus.png}">
+</head>
+
+<body>
+	<!-- Preloader -->
+	<div id="preloader">
+		<div id="status">&nbsp;</div>
+	</div>
+	<!-- TOP NAVBAR -->
+	<div th:replace="public/public::top"></div>
+	<!-- /END OF TOP NAVBAR -->
+
+	<!-- SIDE MENU -->
+	<div th:replace="public/public::left(activeUri='system')"></div>
+	<!-- END OF SIDE MENU -->
+
+	<!--  PAPER WRAP -->
+	<div class="wrap-fluid">
+		<div class="container-fluid paper-wrap bevel tlbr">
+
+
+			<!-- CONTENT -->
+			<!--TITLE -->
+			<div th:replace="public/public::title"></div>
+			<!--/ TITLE -->
+
+			<!-- BREADCRUMB -->
+			<div th:replace="public/public::menu"></div>
+			<!-- END OF BREADCRUMB -->
+
+
+			<div class="content-wrap">
+				<div class="row">
+
+
+					<div class="col-sm-12">
+
+						<div class="nest" id="tableStaticClose">
+							<div class="title-alt">
+								<div>
+									<shiro:hasPermission name="school:add">
+										<button class="btn btn-default btn-sm"
+											th:onclick="|window.location.href='@{/school}'|">
+											<i class="glyphicon glyphicon-plus"> </i> 添加
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="school:edit">
+										<button class="btn btn-primary btn-sm"
+											onclick="return toeditPage('','school')">
+											<i class="fa fa-edit"> </i>编辑
+										</button>
+									</shiro:hasPermission>
+
+									<shiro:hasPermission name="school:delete">
+										<button class="btn btn-danger btn-sm"
+											th:onclick="|return del('','@{/school/}')|">
+											<i class="fa fa-trash-o"> </i>删除
+										</button>
+									</shiro:hasPermission>
+									
+								<button data-target="#modal-Company" class="btn btn-success"
+												type="button" data-toggle="modal">批量导入</button>
+								
+								<button class="btn btn-success" type="button"
+							   th:onclick="|getQrZip('@{/wx/Qr/}')|"
+								>勾选生成二维码</button>
+								
+								</div>
+
+								<div class="titleClose">
+									<a class="gone" href="#tableStaticClose"> <span
+										class="entypo-cancel"></span>
+									</a>
+								</div>
+								<div class="titleToggle">
+									<a class="nav-toggle-alt" href="#tableStatic"> <span
+										class="entypo-up-open"></span>
+									</a>
+								</div>
+
+							</div>
+
+							<div class="body-nest" id="tableStatic">
+
+								<section id="flip-scroll">
+
+									<table class="table table-bordered table-striped cf">
+										<thead class="cf">
+											<tr>
+												<th class="numeric" style="width: 20px;">
+													<div class="checkbox checkbox-inline" style="margin-top: 0px;">
+														<input type="checkbox" id="checkall" name="checkall" /> <label
+															for="checkall"></label>
+													</div>
+												</th>
+												<th class="numeric">分类名</th>
+												<th class="numeric">地址</th>
+												<th class="numeric">区域</th>
+												<th class="numeric">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="school:${pageList.datas}">
+												<td class="numeric">
+													<div class="checkbox checkbox-inline" style="margin-top: 0px;">
+														<input type="checkbox" name="ids" th:id="${school.id}"
+															class="numeric" th:value="${school.id}"> <label
+															th:for="${school.id}"></label>
+													</div>
+												</td>
+												<td class="numeric">[[${school.name }]]</td>
+												<td class="numeric">[[${school.addr }]]</td>
+												<td class="numeric">[[${school.area }]]</td>
+												<td class="numeric"><shiro:hasPermission
+														name="school:edit">
+														<button class="btn btn-primary btn-xs"
+															th:onclick="|return toeditPage('${school.id}','school')|">
+															<i class="fa fa-edit"> </i>编辑
+														</button>
+
+													</shiro:hasPermission> <shiro:hasPermission name="school:delete">
+														<button class="btn btn-danger btn-xs"
+															th:onclick="|return del('@{/school/}${school.id}','')|">
+															<i class="fa fa-trash-o"> </i>删除
+														</button>
+													</shiro:hasPermission>
+											
+													</td>
+											</tr>
+
+
+
+										</tbody>
+									</table>
+
+									<form method="post" id="deleteForm">
+										<input name="_method" value="delete" type="hidden">
+									</form>
+
+
+									<div class="row">
+
+										<div class="col-md-12">
+											<div class="col-md-6">
+												<div class="dataTables_info hidden-xs"
+													style="margin-top: 0px;" role="status" aria-live="polite"
+													th:text="|每页显示${pageList.pageSize}行
+										－ 当前页${pageList.pageNo}页 － 共${pageList.totalPage}页|"></div>
+											</div>
+											<div class="col-md-6">
+												<ul class="pagination pagination-split pull-right"
+													style="margin-top: 0px;">
+													<li th:class="${pageList.pageNo } eq 1 ?disabled:''"><a
+														th:href="${pageList.pageNo} eq 1?'javascript:void(0);':@{/schools?pageNo=}+${pageList.upPage}">上一页</a>
+													</li>
+													<li th:each="page:${pageList.navigatepageNums}"
+														th:class="${page  == pageList.pageNo}?active:''"><a
+														th:href="${page eq pageList.pageNo}?'javascript:void(0)':@{/schools?pageNo=}+${page}">[[${page}]]</a>
+													</li>
+													<li
+														th:class="${pageList.pageNo eq pageList.totalPage}?disabled:''">
+														<a
+														th:href="${pageList.pageNo eq pageList.totalPage}?'javascript:void(0);':@{/schools?pageNo=}+${pageList.nextPage}">下一页</a>
+													</li>
+												</ul>
+											</div>
+										</div>
+
+										<!-- 分页结束 -->
+									</div>
+
+								</section>
+
+							</div>
+
+						</div>
+
+
+					</div>
+
+				</div>
+			</div>
+	<div th:replace="public/public::myModal"></div>
+	
+	
+	
+	
+	
+		<!-- 模版导入 -->
+			<div id="modal-Company" class="modal fade" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-body">
+							<div class="row">
+									<form role="form" class="form-horizontal m-t" id="signupForm"
+										th:action="@{/wx/upload}"enctype="multipart/form-data" method="post">
+										<div class="ibox float-e-margins">
+											<div class="ibox-content">
+															<input type="file"  name="upload"
+																id="upload" onchange="checkfiletype(this);">
+											</div>
+										</div>
+										<div>
+											<button class="btn btn-sm btn-primary pull-right m-t-n-xs"
+												type="submit" id="submitCompany">
+												<strong>导入</strong>
+											</button>
+										</div>
+									</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	
+	
+	
+	
+	
+
+		</div>
+	</div>
+	<!--  END OF PAPER WRAP -->
+	<!-- 右侧隐藏菜单start -->
+	<div th:replace="public/public::right"></div>
+	<!-- 右侧隐藏菜单end-->
+	<!-- 底部js -->
+	<div th:replace="public/public_js::pub_js"></div>
+	<div th:replace="public/public_js::public_script"></div>
+	<div th:replace="public/public::footer"></div>
+	<!-- Sweet alert -->
+	<script th:src="@{/plugs/sweetalert/sweetalert.min.js}"></script>
+  <script>
+		function checkfiletype(o) {
+			var file1 = $(o).val();
+			if (file1 != null) {
+				var file1type = file1.substring(file1.lastIndexOf('.') + 1);
+				if (file1type == "xls" || file1type == "xlsx") {
+					var size = (o.files[0].size / 1024).toFixed(2);
+					if (file1type == "xls" || file1type == "xlsx") {
+						if (size > 20480) {
+							alert("上传文件过大");
+							$(o).val("");
+							$("#submit").attr("disabled", true);
+							return;
+						} else {
+							$("#submit").attr("disabled", false);
+						}
+					}
+				} else {
+					alert("上传文件格式错误");
+					$(o).val("");
+					$("#submit").attr("disabled", true);
+					return;
+				}
+			}
+		}
+		
+		function getQrZip(path){
+			var ids=$("input[name='ids']:checked");
+			if(ids.length > 0){
+			  var str='';
+				ids.each(function(){
+					str += $(this).val() + ',';					
+				})
+				str=str.substring(0,str.length-1);
+        		location.href=path + str;
+			}else{
+				alert("请选择")				
+			}
+		}
+		</script>
+
+
+</body>
+
+</html>

@@ -285,7 +285,7 @@ public class ExcelReadUtil {
 	        HSSFSheet sheet = wb.createSheet(sheetName);    
 	        HSSFRow row = sheet.createRow((int) 0);    
 	        HSSFCellStyle style = wb.createCellStyle();    
-	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);    
+//	        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);    
 	        for (int i = 0; i < excelHeader.size(); i++) {    
 	            HSSFCell cell = row.createCell(i);    
 	            cell.setCellValue(excelHeader.get(i).toString());    

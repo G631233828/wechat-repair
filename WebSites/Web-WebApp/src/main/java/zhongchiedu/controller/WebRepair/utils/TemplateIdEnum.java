@@ -12,7 +12,7 @@ public enum TemplateIdEnum {
 	feedback("gvIOcxeiX1Q0V3Vc0wE0uiWOjrOz_PF6vYZh0rwM-Yk"),
 	
 	//受理结果
-	resultback("MdXBcm3Ba_YRs6PqKNotcbWa9wB-6vXP3Tl3sqajSkk");
+	resultback("EczwS8JRd1XeqdP1fuOh-vf56Z95ZnStMhYKZKmdtzo");
 	
 	
 	private String templateid;

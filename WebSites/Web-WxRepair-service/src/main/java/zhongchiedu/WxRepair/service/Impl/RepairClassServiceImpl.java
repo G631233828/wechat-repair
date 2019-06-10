@@ -79,4 +79,6 @@ public class RepairClassServiceImpl extends GeneralServiceImpl<RepairClass>{
 	}
 	
 	
+	
+	
 }
